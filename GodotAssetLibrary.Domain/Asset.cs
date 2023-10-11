@@ -42,10 +42,10 @@ namespace GodotAssetLibrary.Domain
         public int Rating { get; set; }
 
         [Column("support_level")]
-        public byte SupportLevel { get; set; }
+        public int SupportLevel { get; set; }
 
         [Column("download_provider")]
-        public byte DownloadProvider { get; set; }
+        public int DownloadProvider { get; set; }
 
         [Required]
         [Column("download_commit")]
@@ -64,9 +64,13 @@ namespace GodotAssetLibrary.Domain
         public string IconUrl { get; set; }
 
         [Column("searchable")]
-        public byte Searchable { get; set; }
+        public bool Searchable { get; set; }
 
         [Column("modify_date")]
         public DateTime ModifyDate { get; set; }
+
+        public User User { get; set; }
+        public Category Category { get; set; }
+        public AssetPreview Previews { get; set; }
     }
 }

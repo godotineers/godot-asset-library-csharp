@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections;
+using System.Text.Json;
 
 namespace GodotAssetLibrary.Helpers
 {
@@ -24,7 +25,7 @@ namespace GodotAssetLibrary.Helpers
 
         public string Generate(object data)
         {
-            var tokenData = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+            var tokenData = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)));
             var tokenId = new byte[8];
 
             using (var rng = new RNGCryptoServiceProvider())
@@ -59,7 +60,7 @@ namespace GodotAssetLibrary.Helpers
                 return null;
             }
 
-            return JsonConvert.DeserializeObject(tokenData);
+            return JsonSerializer.Deserialize<Token>(tokenData);
         }
     }
 }

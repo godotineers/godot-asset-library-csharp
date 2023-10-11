@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GodotAssetLibrary.Domain
@@ -50,7 +50,7 @@ namespace GodotAssetLibrary.Domain
         public string IconUrl { get; set; }
 
         [Column("status")]
-        public byte Status { get; set; }
+        public int Status { get; set; }
 
         [Required]
         [Column("reason", TypeName = "text")]
@@ -61,5 +61,10 @@ namespace GodotAssetLibrary.Domain
 
         [Column("modify_date")]
         public DateTime ModifyDate { get; set; }
+
+        public User User { get; set; }
+        public AssetEditPreview AssetEditPreviews { get; set; }
+        public Category Category { get; set; }
+        public Asset Asset { get; set; }
     }
 }

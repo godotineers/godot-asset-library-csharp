@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GodotAssetLibrary.Domain
@@ -27,5 +27,7 @@ namespace GodotAssetLibrary.Domain
 
         [Column("operation")]
         public byte Operation { get; set; }
+
+        public AssetPreview Preview { get; set; }
     }
 }
