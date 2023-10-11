@@ -1,3 +1,6 @@
 vendor/**
 logs/**/*.log
 src/settings-local.php
+bin/
+obj/
+.vs/

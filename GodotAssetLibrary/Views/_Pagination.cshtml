@@ -1,0 +1,37 @@
+@{
+    int currentPage = (int)ViewData["currentPage"];
+    int pageCount = (int)ViewData["pageCount"];
+    string action = (string)ViewData["action"];
+    string controller = (string)ViewData["controller"];
+    IDictionary<string, string> queryStrings = (IDictionary<string, string>)ViewData["queryStrings"];
+}
+
+@if (pageCount > 1)
+{
+    <nav class="pagination">
+        @if (currentPage > 1)
+        {
+            queryStrings["page"] = (currentPage - 1).ToString();
+            <a href="@Url.Action(action, controller, queryStrings)">&laquo; Previous</a>
+        }
+
+        @for (var i = 1; i <= pageCount; i++)
+        {
+            queryStrings["page"] = i.ToString();
+            if (i == currentPage)
+            {
+                <span>@i</span>
+            }
+            else
+            {
+                <a href="@Url.Action(action, controller, queryStrings)">@i</a>
+            }
+        }
+
+        @if (currentPage < pageCount)
+        {
+            queryStrings["page"] = (currentPage + 1).ToString();
+            <a href="@Url.Action(action, controller, queryStrings)">Next &raquo;</a>
+        }
+    </nav>
+}

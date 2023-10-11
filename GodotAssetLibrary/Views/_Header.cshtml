@@ -1,0 +1,23 @@
+<header>
+    <nav>
+        <div>
+            <a href="@Url.Action("Index", "Home")">Home</a>
+            <a href="@Url.Action("Browse", "Asset")">Browse</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="@Url.Action("Submit", "Asset")">Submit</a>
+                <a href="@Url.Action("Profile", "User")">Profile</a>
+                <a href="@Url.Action("Logout", "Auth")">Logout</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Auth")">Login</a>
+            }
+        </div>
+        <div>
+            <form method="get" action="@Url.Action("Search", "Asset")">
+                <input type="text" name="filter" placeholder="Search" value="@Context.Request.Query["filter"]">
+            </form>
+        </div>
+    </nav>
+</header>
