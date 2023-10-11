@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Godot Asset Library</title>
+    <link href="/css/site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <div>
+                <a href="@Url.Action("Index", "Home")">Home</a>
+                <a href="@Url.Action("Browse", "Asset")">Browse</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("Submit", "Asset")">Submit</a>
+                    <a href="@Url.Action("Profile", "User")">Profile</a>
+                    <a href="@Url.Action("Logout", "Auth")">Logout</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Auth")">Login</a>
+                }
+            </div>
+            <div>
+                <form method="get" action="@Url.Action("Search", "Asset")">
+                    <input type="text" name="filter" placeholder="Search" value="@Context.Request.Query["filter"]">
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <p>
+            <span>&copy; 2016-present Juan Linietsky, Ariel Manzur.</span>
+            <span>The Godot Engine logo and the Godot name are trademarks of Ariel Manzur.</span>
+            <span>Website by Emilio Coppola and Hugo Locurcio.</span>
+            <span>Godot icons by Andrea Calabrò.</span>
+        </p>
+        <p>
+            <span>Contribute to the Godot Asset Library on <a href="https://github.com/godotengine/asset-library-laravel">GitHub</a>.</span>
+        </p>
+    </footer>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

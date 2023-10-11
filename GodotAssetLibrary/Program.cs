@@ -5,8 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddEntityFrameworkInMemoryDatabase();
-builder.Services.AddDbContext<AssetLibraryContext>(options => options.UseInMemoryDatabase("godot_asset_library"));
+builder.Services.AddDbContext<AssetLibraryContext>(options => options.UseSqlite("Data Source=godot_asset_library.db"));
+
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -25,6 +27,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.UseEndpoints(endpoints => endpoints.MapControllers());
 
 app.Run();

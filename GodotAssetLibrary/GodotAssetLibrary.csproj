@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GodotAssetLibrary.Application\GodotAssetLibrary.Application.csproj" />
     <ProjectReference Include="..\GodotAssetLibrary.DataLayer\GodotAssetLibrary.DataLayer.csproj" />
     <ProjectReference Include="..\GodotAssetLibrary.Domain\GodotAssetLibrary.Domain.csproj" />
   </ItemGroup>
