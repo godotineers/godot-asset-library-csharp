@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GodotAssetLibrary.Domain
@@ -15,6 +15,6 @@ namespace GodotAssetLibrary.Domain
         public string CategoryName { get; set; }
 
         [Column("category_type")]
-        public byte CategoryType { get; set; }
+        public CategoryTypes CategoryType { get; set; }
     }
 }

@@ -70,7 +70,9 @@ namespace GodotAssetLibrary.Domain
         public DateTime ModifyDate { get; set; }
 
         public User User { get; set; }
+
         public Category Category { get; set; }
-        public AssetPreview Previews { get; set; }
+
+        public AssetPreview Preview { get; set; }
     }
 }

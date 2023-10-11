@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using GodotAssetLibrary.Domain;
 
 namespace GodotAssetLibrary.DataLayer.Services
@@ -14,10 +11,10 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
-        public IEnumerable<Category> ListCategoriesByType(string categoryType)
+        public IEnumerable<Category> ListCategoriesByType(CategoryTypes categoryType)
         {
             return _context.Categories
-                           .Where(c => c.CategoryType.Contains(categoryType))
+                           .Where(c => c.CategoryType == categoryType)
                            .OrderBy(c => c.CategoryId)
                            .ToList();
         }

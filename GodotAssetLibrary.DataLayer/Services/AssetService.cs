@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using GodotAssetLibrary.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
@@ -15,8 +13,8 @@ namespace GodotAssetLibrary.DataLayer.Services
         }
 
         public IEnumerable<Asset> SearchAssets(
-            string category,
-            string categoryType,
+            int category,
+            CategoryTypes categoryType,
             string supportLevelsRegex,
             string username,
             string cost,
@@ -32,8 +30,8 @@ namespace GodotAssetLibrary.DataLayer.Services
                 .Include(a => a.User)
                 .Include(a => a.Category)
                 .Where(a => a.Searchable == true
-                    && EF.Functions.Like(a.CategoryId, category)
-                    && EF.Functions.Like(a.Category.CategoryType, categoryType)
+                    && a.CategoryId == category
+                    && a.Category.CategoryType == categoryType
                     && EF.Functions.Like(a.SupportLevel.ToString(), supportLevelsRegex)
                     && EF.Functions.Like(a.User.Username, username)
                     && EF.Functions.Like(a.Cost, cost)
@@ -41,24 +39,7 @@ namespace GodotAssetLibrary.DataLayer.Services
                     && a.GodotVersion >= minGodotVersion
                     && (EF.Functions.Like(a.Title, filter)
                         || EF.Functions.Like(a.Cost, filter)
-                        || EF.Functions.Like(a.User.Username, filter)))
-                .Select(a => new
-                {
-                    a.AssetId,
-                    a.Title,
-                    Author = a.User.Username,
-                    AuthorId = a.UserId,
-                    a.Category.CategoryName,
-                    a.CategoryId,
-                    a.GodotVersion,
-                    a.Rating,
-                    a.Cost,
-                    a.SupportLevel,
-                    a.IconUrl,
-                    a.Version,
-                    a.VersionString,
-                    a.ModifyDate
-                });
+                        || EF.Functions.Like(a.User.Username, filter)));
 
             // OrderBy logic based on order and orderDirection parameters
             if (orderDirection == "asc")
@@ -103,8 +84,8 @@ namespace GodotAssetLibrary.DataLayer.Services
         }
 
         public int SearchAssetsCount(
-            string category,
-            string categoryType,
+            int category,
+            CategoryTypes categoryType,
             string supportLevelsRegex,
             string username,
             string cost,
@@ -116,8 +97,8 @@ namespace GodotAssetLibrary.DataLayer.Services
                 .Include(a => a.User)
                 .Include(a => a.Category)
                 .Where(a => a.Searchable == true
-                    && EF.Functions.Like(a.CategoryId, category)
-                    && EF.Functions.Like(a.Category.CategoryType, categoryType)
+                    && a.Category.CategoryType == categoryType
+                    && a.CategoryId == category
                     && EF.Functions.Like(a.SupportLevel.ToString(), supportLevelsRegex)
                     && EF.Functions.Like(a.User.Username, username)
                     && EF.Functions.Like(a.Cost, cost)
@@ -140,7 +121,7 @@ namespace GodotAssetLibrary.DataLayer.Services
             return _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.User)
-                .Include(a => a.Previews)
+                .Include(a => a.Preview)
                 .SingleOrDefault(a => a.AssetId == id);
         }
 

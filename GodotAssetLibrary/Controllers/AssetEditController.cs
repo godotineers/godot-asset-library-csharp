@@ -4,8 +4,8 @@ using System;
 
 namespace GodotAssetLibrary.Controllers
 {
-    [Route("api/asset")]
-    [ApiController]
+    [Route("asset")]
+    [Controller]
     public class AssetEditController : ControllerBase
     {
         // ... Dependency injections and other setup ...
@@ -39,14 +39,14 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("{id:int}")]
-        public IActionResult UpdateAsset(int id, /* parameters here */)
+        public IActionResult UpdateAsset(int id)
         {
             // TODO: Implement the logic to update an existing asset
             throw new NotImplementedException();
         }
 
         [HttpPost("edit/{id:int}")]
-        public IActionResult SubmitAssetEdit(int id, /* parameters here */)
+        public IActionResult SubmitAssetEdit(int id)
         {
             // TODO: Implement the logic to submit an asset edit
             throw new NotImplementedException();

@@ -4,8 +4,8 @@ using System;
 
 namespace GodotAssetLibrary.Controllers
 {
-    [Route("api/user")]
-    [ApiController]
+    [Route("user")]
+    [Controller]
     public class UserController : ControllerBase
     {
         // Service dependencies would be injected here, for example:

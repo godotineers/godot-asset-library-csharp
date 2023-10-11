@@ -4,8 +4,8 @@ using System;
 
 namespace GodotAssetLibrary.Controllers
 {
-    [Route("api/auth")]
-    [ApiController]
+    [Route("auth")]
+    [Controller]
     public class AuthController : ControllerBase
     {
         // ... Dependency injections and other setup ...

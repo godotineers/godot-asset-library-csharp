@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Docs.Samples;
 using System;
 // ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
-    [Route("api/asset")]
-    [ApiController]
+    [Route("asset")]
+    [Controller]
     public class AssetController : ControllerBase
     {
         // Service dependencies would be injected here, for example:
@@ -21,7 +22,7 @@ namespace GodotAssetLibrary.Controllers
         public IActionResult GetAssets(/* potential parameters for filtering, pagination, etc. */)
         {
             // TODO: Implement the logic to retrieve (or search for) assets
-            throw new NotImplementedException();
+            return ControllerContext.MyDisplayRouteInfo();
         }
 
         [HttpGet("{id:int}")]
@@ -32,7 +33,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("{id:int}/support_level")]
-        public IActionResult UpdateSupportLevel(int id, /* other potential parameters for the support level */)
+        public IActionResult UpdateSupportLevel(int id)
         {
             // TODO: Implement the logic to update the support level of an asset
             throw new NotImplementedException();

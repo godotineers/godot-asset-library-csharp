@@ -3,6 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Text.Json;
+using GodotAssetLibrary.Domain;
 
 namespace GodotAssetLibrary.Helpers
 {
