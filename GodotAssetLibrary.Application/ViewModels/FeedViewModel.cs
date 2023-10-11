@@ -8,5 +8,7 @@ namespace GodotAssetLibrary.Application.ViewModels
 {
     public class FeedViewModel
     {
+        public IEnumerable<EventViewModel> Events { get; set; }
+
     }
 }

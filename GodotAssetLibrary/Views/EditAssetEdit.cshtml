@@ -1,4 +1,4 @@
-<?php include("_header.phtml") ?>
+
 <?php if(isset($data['original'])) {
     $_asset_values = array_merge($data['original'], array_filter($data, function($value){return $value !== null;}));
 } else {
@@ -14,7 +14,7 @@
 <?php } ?>
 
 <form class="form-horizontal" action="<?php echo raw($basepath) ?>/asset/edit/<?php echo url($data['edit_id']) ?>" method="post">
-    <?php include("_csrf.phtml") ?>
+    @Html.PartialAsync("_Csrf.cshtml")
     <fieldset>
         <!-- Form Name -->
         <legend>
@@ -24,7 +24,7 @@
             </a>
         </legend>
 
-        <?php include("_asset_fields.phtml") ?>
+        @Html.PartialAsync("_AssetFields.cshtml")
 
         <div class="form-group">
             <label class="col-md-4 control-label" for="submit"></label>
@@ -38,4 +38,4 @@
 
     </fieldset>
 </form>
-<?php include("_footer.phtml") ?>
+
