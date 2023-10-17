@@ -190,14 +190,14 @@ $preview_field_names = [
     @if (Model.Status == "new")
     {
         <form class="form-inline" action="<?php echo raw($basepath) ?>/asset/edit/<?php echo url($data['edit_id']) ?>/review" method="post">
-            @Html.PartialAsync("_Csrf.cshtml")
+            @Html.AntiForgeryToken()
             <button type="submit" class="btn btn-primary">Put in queue</button>
         </form>
     }
     else if (Model.Status == "in_review")
     {
         <form class="form-horizontal" action="<?php echo raw($basepath) ?>/asset/edit/<?php echo url($data['edit_id']) ?>/accept" method="post">
-            @Html.PartialAsync("_Csrf.cshtml")
+            @Html.AntiForgeryToken()
 
             <button type="submit" class="btn btn-success col-md-1">Accept</button>
 
@@ -223,7 +223,7 @@ $preview_field_names = [
         </form>
 
         <form class="form-horizontal" action="<?php echo raw($basepath) ?>/asset/edit/<?php echo url($data['edit_id']) ?>/reject" method="post">
-            @Html.PartialAsync("_Csrf.cshtml")
+            @Html.AntiForgeryToken()
 
             <button type="submit" class="btn btn-danger col-md-1">Reject</button>
 

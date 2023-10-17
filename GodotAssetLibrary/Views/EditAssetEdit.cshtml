@@ -14,7 +14,7 @@
 <?php } ?>
 
 <form class="form-horizontal" action="<?php echo raw($basepath) ?>/asset/edit/<?php echo url($data['edit_id']) ?>" method="post">
-    @Html.PartialAsync("_Csrf.cshtml")
+    @Html.AntiForgeryToken()
     <fieldset>
         <!-- Form Name -->
         <legend>

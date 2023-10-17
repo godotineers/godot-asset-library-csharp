@@ -1,6 +1,6 @@
 
 <form class="form-horizontal" action="<?php echo raw($basepath) ?>/asset" method="post">
-    @Html.PartialAsync("_Csrf.cshtml")
+    @Html.AntiForgeryToken()
     <fieldset>
 
         <!-- Form Name -->

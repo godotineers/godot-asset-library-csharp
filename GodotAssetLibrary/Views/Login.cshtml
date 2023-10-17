@@ -16,7 +16,7 @@
 <?php endif ?>
 
 <form action="<?php echo raw($basepath) ?>/login" method="post">
-    @Html.PartialAsync("_Csrf.cshtml")
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label for="login-form-username">Username</label>
         <input type="text" name="username" class="form-control" id="login-form-username" placeholder="Username">
