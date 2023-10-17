@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GodotAssetLibrary.Domain
@@ -26,9 +26,9 @@ namespace GodotAssetLibrary.Domain
         public byte Type { get; set; }
 
         [Column("session_token")]
-        public byte[] SessionToken { get; set; }
+        public byte[]? SessionToken { get; set; }
 
         [Column("reset_token")]
-        public byte[] ResetToken { get; set; }
+        public byte[]? ResetToken { get; set; }
     }
 }

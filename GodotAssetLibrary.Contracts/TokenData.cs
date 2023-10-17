@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotAssetLibrary.Domain
+namespace GodotAssetLibrary.Contracts
 {
-    public class Token
+    public class TokenData
     {
+        public byte[] Session { get; set; }
     }
 }

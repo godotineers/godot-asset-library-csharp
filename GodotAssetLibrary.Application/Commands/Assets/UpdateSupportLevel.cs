@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotAssetLibrary.Application.Commands
+namespace GodotAssetLibrary.Application.Commands.Assets
 {
-    public class UndeleteAsset : IRequest<string>
+    public class UpdateSupportLevel : IRequest<string>
     {
         public int AssetId { get; set; }
     }

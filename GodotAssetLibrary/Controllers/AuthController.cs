@@ -1,72 +1,74 @@
+using CommunityToolkit.Diagnostics;
+using GodotAssetLibrary.Application.Commands.Auth;
+using GodotAssetLibrary.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 // ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
     [Route("auth")]
     [Controller]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
-        // ... Dependency injections and other setup ...
+        public IMediator Mediator { get; }
+
+        public AuthController(
+                IMediator mediator)
+        {
+            Mediator = mediator;
+        }
 
         [HttpGet("configure")]
         public IActionResult Configure()
         {
-            // TODO: Implement the logic to configure authentication settings or similar operations
             throw new NotImplementedException();
         }
 
         [HttpPost("register")]
         public IActionResult Register(/* parameters here */)
         {
-            // TODO: Implement the logic to register a new user
             throw new NotImplementedException();
         }
 
         [HttpPost("login")]
-        public IActionResult Login(/* parameters here */)
+        public async Task<IActionResult> Login(AuthLoginRequest loginRequest)
         {
-            // TODO: Implement the logic to login a user
-            throw new NotImplementedException();
+            Guard.IsNotNullOrWhiteSpace(loginRequest.Username, nameof(loginRequest.Username));
+            Guard.IsNotNullOrWhiteSpace(loginRequest.Password, nameof(loginRequest.Password));
+
+            return Ok(await Mediator.Send(new Login { Username = loginRequest.Username, Password = loginRequest.Password, Token = loginRequest.Token }));
         }
 
         [HttpGet("logout")]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            // TODO: Implement the logic to logout a user
             throw new NotImplementedException();
         }
 
         [HttpPost("forgot_password")]
         public IActionResult ForgotPassword(/* parameters here */)
         {
-            // TODO: Implement the logic for forgot password functionality
             throw new NotImplementedException();
         }
 
         [HttpGet("reset_password")]
         public IActionResult GetResetPassword()
         {
-            // TODO: Implement the logic to display reset password page or similar operations
             throw new NotImplementedException();
         }
 
         [HttpPost("reset_password")]
         public IActionResult PostResetPassword(/* parameters here */)
         {
-            // TODO: Implement the logic to reset the password
             throw new NotImplementedException();
         }
 
         [HttpPost("change_password")]
         public IActionResult ChangePassword(/* parameters here */)
         {
-            // TODO: Implement the logic to change the password
             throw new NotImplementedException();
         }
-
-        // ... potential other endpoints ...
     }
 }

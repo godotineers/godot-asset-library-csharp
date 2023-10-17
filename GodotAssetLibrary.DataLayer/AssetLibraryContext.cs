@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer
 {
-    public class AssetLibraryContext : DbContext, IAssetLibraryContext
+    internal class AssetLibraryContext : DbContext, IAssetLibraryContext
     {
         public AssetLibraryContext(DbContextOptions<AssetLibraryContext> options) : base(options)
         {

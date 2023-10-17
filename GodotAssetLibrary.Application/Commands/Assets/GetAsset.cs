@@ -4,7 +4,7 @@ using GodotAssetLibrary.DataLayer;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GodotAssetLibrary.Application.Commands
+namespace GodotAssetLibrary.Application.Commands.Assets
 {
     public class GetAssetById : IRequest<AssetViewModel>
     {

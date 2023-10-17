@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotAssetLibrary.Application.Commands
+namespace GodotAssetLibrary.Application.Results.Auth
 {
-    public class DeleteAsset : IRequest<string>
+    public class ChangePasswordResult
     {
-        public int AssetId { get; set; }
     }
 }

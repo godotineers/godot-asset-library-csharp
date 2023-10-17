@@ -1,46 +1,45 @@
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using GodotAssetLibrary.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
-    public class UserService
+    internal class UserService : IUserService
     {
-        private readonly AssetLibraryContext _context;
+        private readonly IAssetLibraryContext _context;
 
-        public UserService(AssetLibraryContext context)
+        public UserService(IAssetLibraryContext context)
         {
             _context = context;
         }
 
-        public User GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return _context.Users.SingleOrDefault(u => u.UserId == id);
+            return await _context.Users.SingleOrDefaultAsync(u => u.UserId == id);
         }
 
-        public User GetUserByUsername(string username)
+        public async Task<User> GetUserByUsername(string username)
         {
-            return _context.Users.SingleOrDefault(u => u.Username == username);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(u => u.Email == email);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
-        public User GetUserBySessionToken(byte[] sessionToken)
+        public async Task<User> GetUserBySessionToken(byte[] sessionToken)
         {
-            return _context.Users.SingleOrDefault(u => u.SessionToken == sessionToken);
+            return await _context.Users.SingleOrDefaultAsync(u => u.SessionToken == sessionToken);
         }
 
-        public User GetUserByResetToken(byte[] resetToken)
+        public async Task<User> GetUserByResetToken(byte[] resetToken)
         {
-            return _context.Users.SingleOrDefault(u => u.ResetToken == resetToken);
+            return await _context.Users.SingleOrDefaultAsync(u => u.ResetToken == resetToken);
         }
 
-        public void SetSessionToken(int userId, byte[] sessionToken)
+        public async Task SetSessionToken(int userId, byte[] sessionToken)
         {
-            var user = _context.Users.Find(userId);
+            var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.SessionToken = sessionToken;
@@ -48,9 +47,9 @@ namespace GodotAssetLibrary.DataLayer.Services
             }
         }
 
-        public void SetResetToken(int userId, byte[] resetToken)
+        public async Task SetResetToken(int userId, byte[] resetToken)
         {
-            var user = _context.Users.Find(userId);
+            var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.ResetToken = resetToken;
@@ -58,9 +57,9 @@ namespace GodotAssetLibrary.DataLayer.Services
             }
         }
 
-        public void SetPasswordAndNullifySession(int userId, string passwordHash)
+        public async Task SetPasswordAndNullifySession(int userId, string passwordHash)
         {
-            var user = _context.Users.Find(userId);
+            var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.PasswordHash = passwordHash;

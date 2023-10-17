@@ -5,9 +5,9 @@ namespace GodotAssetLibrary.DataLayer.Services
 {
     public class AssetService
     {
-        private readonly AssetLibraryContext _context;
+        private readonly IAssetLibraryContext _context;
 
-        public AssetService(AssetLibraryContext context)
+        public AssetService(IAssetLibraryContext context)
         {
             _context = context;
         }

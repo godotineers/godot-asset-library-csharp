@@ -1,3 +1,5 @@
+using GodotAssetLibrary.Application;
+using GodotAssetLibrary.Common;
 using GodotAssetLibrary.DataLayer;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,8 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<AssetLibraryContext>(options => options.UseSqlite("Data Source=godot_asset_library.db"));
+builder.Services.AddDataLayer(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("AssetLibrary");
+        var serverVersion = new MariaDbServerVersion("11.1.2");
+        options.UseMySql(connectionString, serverVersion);
+    });
 
+builder.Services.AddApplicationLayer();
+builder.Services.AddCommonLayer()
+            .ConfigureAuthCryptoOptions(options => builder.Configuration.GetSection("AuthCrypto").Bind(options));
 
 builder.Services.AddControllersWithViews();
 

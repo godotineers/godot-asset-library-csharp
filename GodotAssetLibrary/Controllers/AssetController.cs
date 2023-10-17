@@ -1,4 +1,4 @@
-using GodotAssetLibrary.Application.Commands;
+using GodotAssetLibrary.Application.Commands.Assets;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotAssetLibrary.Application.Commands
+namespace GodotAssetLibrary.Application.Results.Auth
 {
-    public class GetAssets : IRequest<string>
+    public class ConfigureResult
     {
     }
 }

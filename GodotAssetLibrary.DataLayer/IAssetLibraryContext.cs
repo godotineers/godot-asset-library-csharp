@@ -1,4 +1,4 @@
-﻿using GodotAssetLibrary.Domain;
+using GodotAssetLibrary.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer
@@ -11,5 +11,7 @@ namespace GodotAssetLibrary.DataLayer
         DbSet<Asset> Assets { get; set; }
         DbSet<Category> Categories { get; set; }
         DbSet<User> Users { get; set; }
+
+        int SaveChanges();
     }
 }
