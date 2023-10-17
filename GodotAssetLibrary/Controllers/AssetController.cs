@@ -1,58 +1,48 @@
+using GodotAssetLibrary.Application.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Docs.Samples;
-using System;
-// ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
     [Route("asset")]
     [Controller]
-    public class AssetController : ControllerBase
+    public class AssetController : Controller
     {
-        // Service dependencies would be injected here, for example:
-        // private readonly AssetService _assetService;
-        // public AssetController(AssetService assetService)
-        // {
-        //     _assetService = assetService;
-        // }
+        public IMediator Mediator { get; }
 
-        // ... other setup ...
+        public AssetController(IMediator mediator)
+        {
+            Mediator = mediator;
+        }
 
         [HttpGet]
-        public IActionResult GetAssets(/* potential parameters for filtering, pagination, etc. */)
+        public async Task<IActionResult> GetAssets()
         {
-            // TODO: Implement the logic to retrieve (or search for) assets
-            return ControllerContext.MyDisplayRouteInfo();
+            return Ok(await Mediator.Send(new GetAssets { }));
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetAssetById(int id)
+        public async Task<IActionResult> GetAssetById(int id)
         {
-            // TODO: Implement the logic to retrieve a single asset by its ID
-            throw new NotImplementedException();
+            return View("Asset", await Mediator.Send(new GetAssetById { AssetId = id }));
         }
 
         [HttpPost("{id:int}/support_level")]
-        public IActionResult UpdateSupportLevel(int id)
+        public async Task<IActionResult> UpdateSupportLevel(int id)
         {
-            // TODO: Implement the logic to update the support level of an asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(new UpdateSupportLevel { AssetId = id }));
         }
 
         [HttpPost("{id:int}/delete")]
-        public IActionResult DeleteAsset(int id)
+        public async Task<IActionResult> DeleteAsset(int id)
         {
-            // TODO: Implement the logic to delete an asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(new DeleteAsset { AssetId = id }));
         }
 
         [HttpPost("{id:int}/undelete")]
-        public IActionResult UndeleteAsset(int id)
+        public async Task<IActionResult> UndeleteAsset(int id)
         {
-            // TODO: Implement the logic to undelete (or restore) an asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(new UndeleteAsset { AssetId = id }));
         }
-
-        // ... potential other endpoints ...
     }
 }
