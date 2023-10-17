@@ -8,13 +8,14 @@ namespace GodotAssetLibrary.Application.ViewModels
 {
     public class AssetViewModel
     {
+        public string Id { get; set; }
         public bool Searchable { get; set; }
         public string Title { get; set; }
         public string VersionString { get; set; }
         public string GodotVersion {  get; set; }
         public string Category { get; set; }
 
-        public string SupportLevel { get; set; }
+        public SupportLevel SupportLevel { get; set; }
 
         public string Author { get; set; }
 
@@ -23,6 +24,8 @@ namespace GodotAssetLibrary.Application.ViewModels
         public string ModifyDate { get; set; }
 
         public string Description { get; set; }
+
+        public string IconUrl { get; set; }
 
         public string BrowseUrl { get; set; }
 

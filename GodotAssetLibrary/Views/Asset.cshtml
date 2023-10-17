@@ -2,7 +2,7 @@
 
 <div class="media">
     <div class="media-left">
-        <img class="media-object" src="<?php echo esc($data['icon_url']) ?>" alt="<?php echo esc($data['title']) ?>'s icon" width="80" height="80">
+        <img class="media-object" src="@Model.IconUrl" alt="@Model.Title's icon" width="80" height="80">
     </div>
     <div class="media-body">
         <h4 class="media-heading">
@@ -55,13 +55,13 @@
         </a>
     }
 
-    <?php if(isset($user) && ($user['user_id'] == $data['author_id'] || $user['type'] >= $constants['user_type']['editor'])) { ?>
-    <a class="btn btn-success" href="<?php echo raw($basepath) ?>/asset/<?php echo url($data['asset_id']) ?>/edit">
-        <i class="glyphicon glyphicon-pencil"></i> Edit
-    </a>
-    <?php } ?>
+    <author asset="@Model">
+        <a class="btn btn-success" href="@Url.Action("EditAsset", "AssetEdit", new { id = Model.Id } )">
+            <i class="glyphicon glyphicon-pencil"></i> Edit
+        </a>
+    </author>
 
-    <a class="btn btn-warning" href="<?php echo raw($basepath) ?>/asset/edit?asset=<?php echo url($data['asset_id']) ?>&amp;status=new+in_review+accepted+rejected">
+    <a class="btn btn-warning" href="@Url.Action("GetAssetEdits", "AssetEdit", new { id = Model.Id, status = new string[] { "new", "in_review", "accepted", "rejected" } } )">
         <i class="glyphicon glyphicon-list"></i> Recent Edits
     </a>
 </p>
@@ -85,9 +85,9 @@
             </a>
         </div>
     }
-</div>
-@if (User.IsInRole("moderator"))
-{
+</div
+
+<moderator>
     <div class="panel panel-danger">
         <div class="panel-heading">
             Admin tools
@@ -100,12 +100,7 @@
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-default">Change support level</button>
                     </span>
-                    <select id="support_level" name="support_level" class="form-control">
-                        <?php foreach($constants['support_level'] as $id => $name) if(is_int($id)) { ?>
-                        <option value="<?php echo esc($name) ?>" <?php if($name == $data['support_level']) echo 'selected=""'; ?>>
-                    <?php echo esc(ucfirst($name)) ?>
-                    </option>
-                        <?php } ?>
+                    <select id="support_level" name="support_level" class="form-control" asp-for="SupportLevel" asp-items="Html.GetEnumSelectList<SupportLevel>()">
                     </select>
                 </div>
             }
@@ -128,4 +123,4 @@
             }
         </div>
     </div>
-}
+</moderator>
