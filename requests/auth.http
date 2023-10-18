@@ -7,19 +7,38 @@
 @createdAt = {{$datetime iso8601}}
 @modifiedBy = {{$processEnv USERNAME}}
 
-// Auth/Login
+##################################
+// Auth/Register
+POST {{protocol}}://{{host}}/auth/register HTTP/1.1
+Content-Type: multipart/form-data; boundary=---011000010111000001101001
 
+-----011000010111000001101001
+Content-Disposition: form-data; name="username"
+
+Username
+-----011000010111000001101001
+Content-Disposition: form-data; name="password"
+
+Password
+-----011000010111000001101001
+Content-Disposition: form-data; name="email"
+
+test@no-email.com
+-----011000010111000001101001--
+
+##################################
+// Auth/Login
 POST {{protocol}}://{{host}}/auth/login HTTP/1.1
 Content-Type: multipart/form-data; boundary=---011000010111000001101001
 
 -----011000010111000001101001
 Content-Disposition: form-data; name="username"
 
-tylercoles
+Username
 -----011000010111000001101001
 Content-Disposition: form-data; name="password"
 
 Password
 -----011000010111000001101001--
-
+  
 ##################################

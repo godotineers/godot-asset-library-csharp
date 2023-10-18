@@ -8,5 +8,9 @@ namespace GodotAssetLibrary.Application.Results.Auth
 {
     public class RegisterResult
     {
+        public string Error { get; internal set; }
+        public string Username { get; internal set; }
+        public bool Registered { get; internal set; }
+        public string Url { get; internal set; }
     }
 }

@@ -31,7 +31,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
 
             public async Task<LoginResult> Handle(Login request, CancellationToken cancellationToken)
             {
-                var user = await UserService.GetUserByUsername(request.Username);
+                var user = await UserService.GetUserByUsername(request.Username, cancellationToken);
 
                 if (user == null)
                 {
@@ -72,7 +72,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     }
 
                     // update session token for user
-                    await UserService.SetSessionToken(user.UserId, sessionId);
+                    await UserService.SetSessionToken(user.UserId, sessionId, cancellationToken);
 
 
                     return new LoginResult

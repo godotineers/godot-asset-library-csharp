@@ -12,60 +12,72 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<User?> GetUserById(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.UserId == id);
+            return await _context.Users.SingleOrDefaultAsync(u => u.UserId == id, cancellationToken);
         }
 
-        public async Task<User> GetUserByUsername(string username)
+        public async Task<User?> GetUserByUsername(string username, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Username == username, cancellationToken);
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
 
-        public async Task<User> GetUserBySessionToken(byte[] sessionToken)
+        public async Task<User?> GetUserBySessionToken(byte[] sessionToken, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.SessionToken == sessionToken);
+            return await _context.Users.SingleOrDefaultAsync(u => u.SessionToken == sessionToken, cancellationToken);
         }
 
-        public async Task<User> GetUserByResetToken(byte[] resetToken)
+        public async Task<User?> GetUserByResetToken(byte[] resetToken, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.ResetToken == resetToken);
+            return await _context.Users.SingleOrDefaultAsync(u => u.ResetToken == resetToken, cancellationToken);
         }
 
-        public async Task SetSessionToken(int userId, byte[] sessionToken)
+        public async Task SetSessionToken(int userId, byte[] sessionToken, CancellationToken cancellationToken = default)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.SessionToken = sessionToken;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public async Task SetResetToken(int userId, byte[] resetToken)
+        public async Task SetResetToken(int userId, byte[] resetToken, CancellationToken cancellationToken = default)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.ResetToken = resetToken;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public async Task SetPasswordAndNullifySession(int userId, string passwordHash)
+        public async Task SetPasswordAndNullifySession(int userId, string passwordHash, CancellationToken cancellationToken = default)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 user.PasswordHash = passwordHash;
                 user.SessionToken = null;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
+        }
+
+        public async Task Register(string username, string email, string passwordHash, CancellationToken cancellationToken = default)
+        {
+            await _context.Users.AddAsync(new User
+            {
+                Email = email,
+                PasswordHash = passwordHash,
+                Username = username,
+            });
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

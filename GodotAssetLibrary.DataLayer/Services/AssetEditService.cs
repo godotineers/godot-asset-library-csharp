@@ -1,6 +1,5 @@
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using GodotAssetLibrary.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
@@ -13,7 +12,7 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
-        public AssetEdit GetAssetEditById(int editId)
+        public AssetEdit? GetAssetEditById(int editId)
         {
             return _context.AssetEdits
                 .Include(a => a.User)
@@ -22,12 +21,12 @@ namespace GodotAssetLibrary.DataLayer.Services
                 .SingleOrDefault(a => a.EditId == editId);
         }
 
-        public AssetEdit GetAssetEditBare(int editId)
+        public AssetEdit? GetAssetEditBare(int editId)
         {
             return _context.AssetEdits.Find(editId);
         }
 
-        public AssetEdit GetAssetEditWithStatus(int editId, int status)
+        public AssetEdit? GetAssetEditWithStatus(int editId, int status)
         {
             return _context.AssetEdits.SingleOrDefault(a => a.EditId == editId && a.Status == status);
         }
@@ -78,25 +77,25 @@ namespace GodotAssetLibrary.DataLayer.Services
         }
 
 
-        public void SubmitAssetEdit(AssetEdit assetEdit)
+        public async Task SubmitAssetEdit(AssetEdit assetEdit, CancellationToken cancellationToken = default)
         {
             _context.AssetEdits.Add(assetEdit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void UpdateAssetEdit(AssetEdit assetEdit)
+        public async Task UpdateAssetEdit(AssetEdit assetEdit, CancellationToken cancellationToken = default)
         {
             _context.AssetEdits.Update(assetEdit);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void AddAssetEditPreview(AssetEditPreview assetEditPreview)
+        public async Task AddAssetEditPreview(AssetEditPreview assetEditPreview, CancellationToken cancellationToken = default)
         {
             _context.AssetEditPreviews.Add(assetEditPreview);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void UpdateAssetEditPreview(AssetEditPreview updatedAssetEditPreview)
+        public async Task UpdateAssetEditPreview(AssetEditPreview updatedAssetEditPreview, CancellationToken cancellationToken = default)
         {
             var existingPreview = _context.AssetEditPreviews.SingleOrDefault(a => a.EditId == updatedAssetEditPreview.EditId && a.EditPreviewId == updatedAssetEditPreview.EditPreviewId);
             if (existingPreview != null)
@@ -104,38 +103,38 @@ namespace GodotAssetLibrary.DataLayer.Services
                 existingPreview.Type = updatedAssetEditPreview.Type ?? existingPreview.Type;
                 existingPreview.Link = updatedAssetEditPreview.Link ?? existingPreview.Link;
                 existingPreview.Thumbnail = updatedAssetEditPreview.Thumbnail ?? existingPreview.Thumbnail;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void RemoveAssetEditPreview(int editPreviewId)
+        public async Task RemoveAssetEditPreview(int editPreviewId, CancellationToken cancellationToken = default)
         {
             var editPreview = _context.AssetEditPreviews.Find(editPreviewId);
             if (editPreview != null)
             {
                 _context.AssetEditPreviews.Remove(editPreview);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void SetAssetEditAssetId(int editId, int assetId)
+        public async Task SetAssetEditAssetId(int editId, int assetId, CancellationToken cancellationToken = default)
         {
             var assetEdit = _context.AssetEdits.Find(editId);
             if (assetEdit != null)
             {
                 assetEdit.AssetId = assetId;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void SetAssetEditStatusAndReason(int editId, int status, string reason)
+        public async Task SetAssetEditStatusAndReason(int editId, int status, string reason, CancellationToken cancellationToken = default)
         {
             var assetEdit = _context.AssetEdits.Find(editId);
             if (assetEdit != null)
             {
                 assetEdit.Status = status;
                 assetEdit.Reason = reason;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
     }

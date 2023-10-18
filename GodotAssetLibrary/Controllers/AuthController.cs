@@ -1,9 +1,7 @@
 using CommunityToolkit.Diagnostics;
 using GodotAssetLibrary.Application.Commands.Auth;
-using GodotAssetLibrary.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-// ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
@@ -20,35 +18,39 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet("configure")]
-        public IActionResult Configure()
+        public IActionResult Configure(Configure configure)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost("register")]
-        public IActionResult Register(/* parameters here */)
+        public async Task<IActionResult> Register(Register register)
         {
-            throw new NotImplementedException();
+            Guard.IsNotNullOrWhiteSpace(register.Username, nameof(register.Username));
+            Guard.IsNotNullOrWhiteSpace(register.Password, nameof(register.Password));
+            Guard.IsNotNullOrWhiteSpace(register.Email, nameof(register.Email));
+
+            return Ok(await Mediator.Send(register));
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(AuthLoginRequest loginRequest)
+        public async Task<IActionResult> Login(Login loginRequest)
         {
             Guard.IsNotNullOrWhiteSpace(loginRequest.Username, nameof(loginRequest.Username));
             Guard.IsNotNullOrWhiteSpace(loginRequest.Password, nameof(loginRequest.Password));
 
-            return Ok(await Mediator.Send(new Login { Username = loginRequest.Username, Password = loginRequest.Password, Token = loginRequest.Token }));
+            return Ok(await Mediator.Send(loginRequest));
         }
 
         [HttpGet("logout")]
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public IActionResult Logout(Logout logout)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost("forgot_password")]
-        public IActionResult ForgotPassword(/* parameters here */)
+        public IActionResult ForgotPassword()
         {
             throw new NotImplementedException();
         }

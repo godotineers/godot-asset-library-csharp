@@ -12,6 +12,6 @@ namespace GodotAssetLibrary.DataLayer
         DbSet<Category> Categories { get; set; }
         DbSet<User> Users { get; set; }
 
-        int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

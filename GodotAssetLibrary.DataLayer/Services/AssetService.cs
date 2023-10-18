@@ -110,13 +110,13 @@ namespace GodotAssetLibrary.DataLayer.Services
                 .Count();
         }
 
-        public void CreateAsset(Asset asset)
+        public async Task CreateAsset(Asset asset, CancellationToken cancellationToken = default)
         {
             _context.Assets.Add(asset);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Asset GetAssetById(int id)
+        public Asset? GetAssetById(int id)
         {
             return _context.Assets
                 .Include(a => a.Category)
@@ -125,77 +125,77 @@ namespace GodotAssetLibrary.DataLayer.Services
                 .SingleOrDefault(a => a.AssetId == id);
         }
 
-        public Asset GetAssetBare(int assetId)
+        public Asset? GetAssetBare(int assetId)
         {
             return _context.Assets.Find(assetId);
         }
 
-        public AssetPreview GetAssetPreviewBare(int previewId)
+        public AssetPreview? GetAssetPreviewBare(int previewId)
         {
             return _context.AssetPreviews.Find(previewId);
         }
 
-        public void ApplyCreationalEdit(Asset asset)
+        public async Task ApplyCreationalEdit(Asset asset, CancellationToken cancellationToken = default)
         {
             _context.Assets.Add(asset);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void ApplyEdit(Asset asset)
+        public async Task ApplyEdit(Asset asset, CancellationToken cancellationToken = default)
         {
             _context.Assets.Update(asset);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void ApplyPreviewEditInsert(AssetPreview preview)
+        public async Task ApplyPreviewEditInsert(AssetPreview preview, CancellationToken cancellationToken = default)
         {
             _context.AssetPreviews.Add(preview);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void ApplyPreviewEditRemove(int previewId, int assetId)
+        public async Task ApplyPreviewEditRemove(int previewId, int assetId, CancellationToken cancellationToken = default)
         {
             var preview = _context.AssetPreviews.SingleOrDefault(p => p.PreviewId == previewId && p.AssetId == assetId);
             if (preview != null)
             {
                 _context.AssetPreviews.Remove(preview);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void ApplyPreviewEditUpdate(AssetPreview preview)
+        public async Task ApplyPreviewEditUpdate(AssetPreview preview, CancellationToken cancellationToken = default)
         {
             _context.AssetPreviews.Update(preview);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void SetSupportLevel(int assetId, int supportLevel)
+        public async Task SetSupportLevel(int assetId, int supportLevel, CancellationToken cancellationToken = default)
         {
             var asset = _context.Assets.Find(assetId);
             if (asset != null)
             {
                 asset.SupportLevel = supportLevel;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void DeleteAsset(int assetId)
+        public async Task DeleteAsset(int assetId, CancellationToken cancellationToken = default)
         {
             var asset = _context.Assets.Find(assetId);
             if (asset != null)
             {
                 asset.Searchable = false;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
-        public void UndeleteAsset(int assetId)
+        public async Task UndeleteAsset(int assetId, CancellationToken cancellationToken = default)
         {
             var asset = _context.Assets.Find(assetId);
             if (asset != null)
             {
                 asset.Searchable = true;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
     }
