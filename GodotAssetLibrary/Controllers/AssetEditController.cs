@@ -7,7 +7,7 @@ namespace GodotAssetLibrary.Controllers
 {
     [Route("asset")]
     [Controller]
-    public class AssetEditController : ControllerBase
+    public class AssetEditController : Controller
     {
         public IMediator Mediator { get; }
 

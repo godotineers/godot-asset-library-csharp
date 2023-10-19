@@ -1,4 +1,5 @@
 using GodotAssetLibrary.Application;
+using GodotAssetLibrary.Attributes;
 using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.DataLayer;
 using GodotAssetLibrary.Infrastructure;
@@ -9,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddDataLayer(options =>
     {
         var connectionString = builder.Configuration.GetConnectionString("AssetLibrary");
@@ -25,7 +25,12 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddMvc(options =>
+{
+});
+
 builder.Services.AddScoped<IClaimsProvider, HttpContextClaimsProvider>();
+
 
 var app = builder.Build();
 
