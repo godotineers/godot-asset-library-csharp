@@ -1,4 +1,5 @@
 using GodotAssetLibrary.Application.Commands.Assets;
+using GodotAssetLibrary.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,14 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet]
+        [FrontendViewBind(ViewName = "Assets")]
         public async Task<IActionResult> GetAssets(GetAssets getAssets)
         {
             return Ok(await Mediator.Send(getAssets));
         }
 
         [HttpGet("{id:int}")]
+        [FrontendViewBind(ViewName = "Asset")]
         public async Task<IActionResult> GetAssetById(int id)
         {
             return View("Asset", await Mediator.Send(new GetAssetById { AssetId = id }));

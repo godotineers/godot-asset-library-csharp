@@ -1,4 +1,5 @@
 using GodotAssetLibrary.Application.Commands.AssetEdit;
+using GodotAssetLibrary.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,14 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet]
+        [FrontendViewBind(ViewName = "AssetEdits")]
         public async Task<IActionResult> GetAssetEdits(GetAssetEdits getAssetEdits)
         {
             return Ok(await Mediator.Send(getAssetEdits));
         }
 
         [HttpGet("{id:int}")]
+        [FrontendViewBind(ViewName = "AssetEdit")]
         public async Task<IActionResult> GetAssetEdit(int id, GetAssetEdit getAssetEdit)
         {
             return Ok(await Mediator.Send(getAssetEdit));
@@ -31,6 +34,7 @@ namespace GodotAssetLibrary.Controllers
 
         [HttpGet("{id:int}/edit")]
         [Authorize]
+        [FrontendViewBind(ViewName = "EditAssetEdit")]
         public async Task<IActionResult> EditAsset(int id, EditAsset editAsset)
         {
             return Ok(await Mediator.Send(editAsset));

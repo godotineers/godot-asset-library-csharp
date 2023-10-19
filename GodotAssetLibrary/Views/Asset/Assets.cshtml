@@ -1,0 +1,139 @@
+<?php include("_header.phtml") ?>
+
+<div class="asset-search-container">
+    <form method="get" action="asset">
+        <div class="input-group">
+            <input type="text" class="form-control" name="filter" placeholder="Search for..." aria-label="Search for assets" value="<?php if(isset($params['filter'])) echo esc($params['filter']) ?>">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </span>
+        </div>
+
+        <div class="form-inline form-search">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" class="form-control">
+                    <option value="">
+                        Any
+                    </option>
+
+                    <?php foreach($categories as $key => $category) { ?>
+                        <option value="<?php echo esc($category['id']) ?>" <?php if(isset($params['category']) && $category['id'] == $params['category']) echo 'selected=""'; ?>>
+                            <?php echo esc($category['name']) ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Support level</label>
+                <?php foreach($constants['support_level'] as $id => $level) if(is_int($id)) { ?>
+                    <label class="form-checkbox">
+                        <input type="checkbox" name="support[<?php echo esc($level) ?>]" value="1"
+                            <?php if(isset($params['support']) && (is_array($params['support']) ?
+                                isset($params['support'][$level]) && $params['support'][$level] :
+                                in_array($level, explode(' ', $params['support'])))
+                            ) echo 'checked=""';
+                            ?>>
+                        <?php echo esc(ucfirst($level)) ?>
+                    </label>
+                <?php } ?>
+            </div>
+            <div class="form-group">
+                <label for="godot_version">Godot version</label>
+                <select id="godot_version" name="godot_version" class="form-control">
+                    <option value="">
+                        Any
+                    </option>
+
+                    <?php foreach($constants['common_godot_versions'] as $version) if(substr_count($version, '.') != 2) { ?>
+                        <option value="<?php echo esc($version) ?>" <?php if(isset($params['godot_version']) && $version == $params['godot_version']) echo 'selected=""'; ?>>
+                            <?php echo esc(ucfirst(str_replace('_', ' ', $version))) ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="license">License</label>
+                <select id="license" name="cost" class="form-control">
+                    <option value="">
+                        Any
+                    </option>
+
+                    <?php foreach($constants['licenses'] as $id => $license) { ?>
+                        <option value="<?php echo url($id) ?>" <?php if(isset($params['cost']) && $id == $params['cost']) echo 'selected=""'; ?>>
+                            <?php echo esc($license) ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sort">Order by</label>
+                <select id="sort" name="sort" class="form-control">
+                    <?php if(!isset($params['sort'])) $params['sort'] = 'updated'; foreach(['cost', 'name', 'updated'] as $id => $order) { ?>
+                        <option value="<?php echo esc($order) ?>" <?php if(isset($params['sort']) && $order == $params['sort']) echo 'selected=""'; ?>>
+                            <?php echo $order === 'cost' ? "License" : esc(ucfirst($order)) ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <label class="form-checkbox">
+                    <input type="checkbox" name="reverse" <?php if(isset($params['reverse'])) echo 'checked=""'; ?>>
+                    Reverse
+                </label>
+            </div>
+
+            <?php if(isset($params['user'])) { ?>
+                <div class="form-group bg-info form-highlighted">
+                    <label class="form-checkbox">
+                        <input type="checkbox" name="user" value="<?php echo esc($params['user']) ?>" checked="">
+                        Only by <?php echo esc($params['user']) ?>
+                    </label>
+                </div>
+            <?php } ?>
+        </div>
+
+        <?php if(isset($params['user'])) { ?>
+            <div class="form-actions">
+                <a href="<?php echo raw($basepath) . '/asset/edit?' . raw($query) . '&asset=-1' ?>" class="btn btn-default">
+                    <i class="glyphicon glyphicon-hourglass"></i> View My Pending
+                </a>
+            </div>
+        <?php } ?>
+    </form>
+
+    <div class="asset-search-results">
+        <ol class="asset-list">
+            <?php foreach($data['result'] as $i => $asset) { ?>
+                <li class="asset-item">
+                    <a href="<?php echo raw($basepath) . '/asset/' . url($asset['asset_id']) ?>" class="asset-header">
+                        <img class="media-object" src="<?php echo esc($asset['icon_url']) ?>" alt="<?php echo esc($asset['title']) ?>'s icon" width=80 height=80>
+                        <div class="asset-title">
+                            <h4><?php echo esc($asset['title']) ?></h4>
+                            <div class="asset-tags-container">
+                                <div class="asset-tags">
+                                    <span class="label label-primary"><?php echo esc($asset['category']) ?></span>
+                                    <span class="label label-info"><?php echo esc(ucfirst(str_replace('_', ' ', $asset['godot_version']))) ?></span>
+                                    <span class="label label-<?php echo raw([
+                                        'official' => 'danger',
+                                        'community' => 'success',
+                                        'testing' => 'default',
+                                    ][$asset['support_level']]) ?>"><?php echo esc(ucfirst($asset['support_level'])) ?></span>
+                                </div>
+                                <div class="asset-tags">
+                                    <span class="label label-default"><?php echo esc($asset['cost']) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="asset-footer">
+                        <a href="?user=<?php echo esc($asset['author']) ?>" title="Search assets by '<?php echo esc($asset['author']) ?>'"><?php echo esc($asset['author']) ?></a>
+                        <span><b><?php echo esc($asset['version_string']) ?></b> | <?php echo esc(explode(" ", $asset['modify_date'])[0]) ?></span>
+                    </div>
+                </li>
+            <?php } ?>
+        </ol>
+
+        <?php include("_pagination.phtml") ?>
+    </div>
+</div>
+
+<?php include("_footer.phtml") ?>

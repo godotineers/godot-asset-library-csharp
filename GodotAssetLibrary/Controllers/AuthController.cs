@@ -1,5 +1,6 @@
 using CommunityToolkit.Diagnostics;
 using GodotAssetLibrary.Application.Commands.Auth;
+using GodotAssetLibrary.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("register")]
+        [FrontendViewBind(ViewName = "Register")]
         public async Task<IActionResult> Register(Register register)
         {
             Guard.IsNotNullOrWhiteSpace(register.Username, nameof(register.Username));
@@ -35,6 +37,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("login")]
+        [FrontendViewBind(ViewName = "Login")]
         public async Task<IActionResult> Login(Login loginRequest)
         {
             Guard.IsNotNullOrWhiteSpace(loginRequest.Username, nameof(loginRequest.Username));
@@ -52,12 +55,14 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("forgot_password")]
+        [FrontendViewBind(ViewName = "ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPassword forgotPassword)
         {
             return Ok(await Mediator.Send(forgotPassword));
         }
 
         [HttpGet("reset_password")]
+        [FrontendViewBind(ViewName = "ForgotPasswordResult")]
         public async Task<IActionResult> GetResetPassword(GetResetPassword getResetPassword)
         {
             return Ok(await Mediator.Send(getResetPassword));
@@ -65,6 +70,7 @@ namespace GodotAssetLibrary.Controllers
 
         [HttpPost("reset_password")]
         [Authorize]
+        [FrontendViewBind(ViewName = "ResetPassword")]
         public async Task<IActionResult> PostResetPassword(PostResetPassword postResetPassword)
         {
             return Ok(await Mediator.Send(postResetPassword));
@@ -72,6 +78,7 @@ namespace GodotAssetLibrary.Controllers
 
         [HttpPost("change_password")]
         [Authorize]
+        [FrontendViewBind(ViewName = "ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
         {
             return Ok(await Mediator.Send(changePassword));
