@@ -11,7 +11,8 @@ namespace GodotAssetLibrary.Controllers
     {
         public IMediator Mediator { get; }
 
-        public AssetController(IMediator mediator)
+        public AssetController(
+                    IMediator mediator)
         {
             Mediator = mediator;
         }

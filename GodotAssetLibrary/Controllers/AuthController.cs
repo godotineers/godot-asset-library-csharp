@@ -13,7 +13,7 @@ namespace GodotAssetLibrary.Controllers
         public IMediator Mediator { get; }
 
         public AuthController(
-                IMediator mediator)
+                    IMediator mediator)
         {
             Mediator = mediator;
         }
@@ -46,35 +46,35 @@ namespace GodotAssetLibrary.Controllers
         [HttpGet("logout")]
         [HttpPost("logout")]
         [Authorize]
-        public IActionResult Logout(Logout logout)
+        public async Task<IActionResult> Logout(Logout logout)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(logout));
         }
 
         [HttpPost("forgot_password")]
-        public IActionResult ForgotPassword()
+        public async Task<IActionResult> ForgotPassword(ForgotPassword forgotPassword)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(forgotPassword));
         }
 
         [HttpGet("reset_password")]
-        public IActionResult GetResetPassword()
+        public async Task<IActionResult> GetResetPassword(GetResetPassword getResetPassword)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(getResetPassword));
         }
 
         [HttpPost("reset_password")]
         [Authorize]
-        public IActionResult PostResetPassword(/* parameters here */)
+        public async Task<IActionResult> PostResetPassword(PostResetPassword postResetPassword)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(postResetPassword));
         }
 
         [HttpPost("change_password")]
         [Authorize]
-        public IActionResult ChangePassword(/* parameters here */)
+        public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(changePassword));
         }
     }
 }

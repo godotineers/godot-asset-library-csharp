@@ -2,7 +2,6 @@ using GodotAssetLibrary.Application.Commands.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-// ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {

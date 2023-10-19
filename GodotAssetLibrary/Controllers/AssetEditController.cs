@@ -1,7 +1,7 @@
+using GodotAssetLibrary.Application.Commands.AssetEdit;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-// ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
@@ -9,77 +9,72 @@ namespace GodotAssetLibrary.Controllers
     [Controller]
     public class AssetEditController : ControllerBase
     {
-        // ... Dependency injections and other setup ...
+        public IMediator Mediator { get; }
+
+        public AssetEditController(
+                    IMediator mediator)
+        {
+            Mediator = mediator;
+        }
 
         [HttpGet("edit")]
-        public IActionResult GetAssetEdits()
+        public async Task<IActionResult> GetAssetEdits(GetAssetEdits getAssetEdits)
         {
-            // TODO: Implement the logic to retrieve asset edits
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(getAssetEdits));
         }
 
         [HttpGet("edit/{id:int}")]
-        public IActionResult GetAssetEdit(int id)
+        public async Task<IActionResult> GetAssetEdit(int id, GetAssetEdit getAssetEdit)
         {
-            // TODO: Implement the logic to retrieve a single asset edit by its ID
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(getAssetEdit));
         }
 
         [HttpGet("edit/{id:int}/edit")]
         [Authorize]
-        public IActionResult EditAsset(int id)
+        public async Task<IActionResult> EditAsset(int id, EditAsset editAsset)
         {
-            // TODO: Implement the logic to edit a specific asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(editAsset));
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult CreateAsset(/* parameters here */)
+        public async Task<IActionResult> CreateAsset(CreateAsset createAsset)
         {
-            // TODO: Implement the logic to create a new asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(createAsset));
         }
 
         [HttpPost("{id:int}")]
         [Authorize]
-        public IActionResult UpdateAsset(int id)
+        public async Task<IActionResult> UpdateAsset(int id, UpdateAsset updateAsset)
         {
-            // TODO: Implement the logic to update an existing asset
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(updateAsset));
         }
 
         [HttpPost("edit/{id:int}")]
         [Authorize]
-        public IActionResult SubmitAssetEdit(int id)
+        public async Task<IActionResult> SubmitAssetEdit(int id, SubmitAssetEdit submitAssetEdit)
         {
-            // TODO: Implement the logic to submit an asset edit
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(submitAssetEdit));
         }
 
         [HttpPost("edit/{id:int}/accept")]
-        public IActionResult AcceptAssetEdit(int id)
+        public async Task<IActionResult> AcceptAssetEdit(int id, AcceptAssetEdit acceptAssetEdit)
         {
-            // TODO: Implement the logic to accept an asset edit
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(acceptAssetEdit));
         }
 
         [HttpPost("edit/{id:int}/review")]
         [Authorize(Roles = "Moderator")]
-        public IActionResult ReviewAssetEdit(int id)
+        public async Task<IActionResult> ReviewAssetEdit(int id, ReviewAssetEdit reviewAssetEdit)
         {
-            // TODO: Implement the logic to review an asset edit
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(reviewAssetEdit));
         }
 
         [HttpPost("edit/{id:int}/reject")]
         [Authorize(Roles = "Moderator")]
-        public IActionResult RejectAssetEdit(int id)
+        public async Task<IActionResult> RejectAssetEdit(int id, RejectAssetEdit rejectAssetEdit)
         {
-            // TODO: Implement the logic to reject an asset edit
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(rejectAssetEdit));
         }
-
-        // ... potential other endpoints ...
     }
 }
