@@ -1,29 +1,30 @@
+using GodotAssetLibrary.Application.Commands.User;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 // ... other necessary using directives ...
 
 namespace GodotAssetLibrary.Controllers
 {
     [Route("user")]
     [Controller]
+    [Authorize]
     public class UserController : ControllerBase
     {
-        // Service dependencies would be injected here, for example:
-        // private readonly UserService _userService;
-        // public UserController(UserService userService)
-        // {
-        //     _userService = userService;
-        // }
-
-        // ... other setup ...
-
-        [HttpGet("feed")]
-        public IActionResult GetUserFeed(/* potential parameters for filtering, pagination, etc. */)
+        public UserController(
+                    IMediator mediator)
         {
-            // TODO: Implement the logic to retrieve the user's feed
-            throw new NotImplementedException();
+            Mediator = mediator;
         }
 
-        // ... potential other endpoints ...
+        public IMediator Mediator { get; }
+
+        [HttpGet("feed")]
+        [Authorize]
+        public async Task<IActionResult> GetUserFeed(UserFeed userFeed)
+        {
+            return Ok(await Mediator.Send(userFeed));
+        }
+
     }
 }

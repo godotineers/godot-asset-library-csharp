@@ -1,3 +1,7 @@
+
+
+using GodotAssetLibrary.Common.User;
+
 namespace GodotAssetLibrary.Contracts
 {
     public interface ISessionUtility
@@ -6,10 +10,6 @@ namespace GodotAssetLibrary.Contracts
 
         byte[] GenerateResetId();
 
-        string GenerateToken(TokenData tokenData);
-
-        byte[] SignToken(string tokenPayload);
-
-        TokenData? Validate(string token);
+        UserData GetUserData();
     }
 }

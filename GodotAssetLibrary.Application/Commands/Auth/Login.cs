@@ -1,4 +1,5 @@
 using GodotAssetLibrary.Application.Results.Auth;
+using GodotAssetLibrary.Common.User;
 using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.DataLayer.Services;
 using MediatR;
@@ -18,16 +19,19 @@ namespace GodotAssetLibrary.Application.Commands.Auth
             public LoginHandler(
                     IUserService userService,
                     IPasswordUtility passwordUtility,
-                    ISessionUtility sessionUtility)
+                    ISessionUtility sessionUtility,
+                    ITokenUtility tokenUtility)
             {
                 UserService = userService;
                 PasswordUtility = passwordUtility;
                 SessionUtility = sessionUtility;
+                TokenUtility = tokenUtility;
             }
 
             public IUserService UserService { get; }
             public IPasswordUtility PasswordUtility { get; }
             public ISessionUtility SessionUtility { get; }
+            public ITokenUtility TokenUtility { get; }
 
             public async Task<LoginResult> Handle(Login request, CancellationToken cancellationToken)
             {
@@ -50,7 +54,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     // if a token was passed in, validate the token.
                     if (!string.IsNullOrWhiteSpace(request.Token))
                     {
-                        var tokenData = SessionUtility.Validate(request.Token);
+                        var tokenData = TokenUtility.Validate(request.Token);
 
                         if (tokenData == null || tokenData?.Session == null)
                         {
@@ -68,7 +72,17 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     {
                         // no token, generate a new session
                         sessionId = SessionUtility.GenerateSessionId();
-                        token = SessionUtility.GenerateToken(new TokenData { Session = sessionId });
+                        token = TokenUtility.GenerateToken(new TokenData
+                        {
+                            Session = sessionId,
+                            UserData = new UserData
+                            {
+                                Email = user.Email,
+                                Type = user.Type,
+                                UserId = user.UserId,
+                                Username = user.Username,
+                            }
+                        });
                     }
 
                     // update session token for user

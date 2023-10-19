@@ -1,23 +1,24 @@
-using GodotAssetLibrary.Common.Password;
-using GodotAssetLibrary.Common.Session;
 using GodotAssetLibrary.Contracts;
+using GodotAssetLibrary.Infrastructure.Password;
+using GodotAssetLibrary.Infrastructure.Session;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GodotAssetLibrary.Common
+namespace GodotAssetLibrary.Infrastructure
 {
     public static class ServiceRegistration
     {
-        public static ICommonBuilder AddCommonLayer(
+        public static ICommonBuilder AddInfrastructureLayer(
             this IServiceCollection services)
         {
+            services.AddSingleton<ITokenUtility, TokenUtility>();
             services.AddSingleton<IPasswordUtility, PasswordUtility>();
-            services.AddSingleton<ISessionUtility, SessionUtility>();
+            services.AddScoped<ISessionUtility, SessionUtility>();
+            services.AddScoped<IRequestLifetime, RequestLifetimeUtility>();
 
             services.AddOptions<AuthCryptoOptions>();
 
             return new CommonBuilder(services);
         }
-
 
         public interface ICommonBuilder
         {

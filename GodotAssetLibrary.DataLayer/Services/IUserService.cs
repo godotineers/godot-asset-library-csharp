@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Enums;
 using GodotAssetLibrary.Domain;
 
 namespace GodotAssetLibrary.DataLayer.Services
@@ -9,6 +10,7 @@ namespace GodotAssetLibrary.DataLayer.Services
         Task<User?> GetUserByResetToken(byte[] resetToken, CancellationToken cancellationToken = default);
         Task<User?> GetUserBySessionToken(byte[] sessionToken, CancellationToken cancellationToken = default);
         Task<User?> GetUserByUsername(string username, CancellationToken cancellationToken = default);
+        Task Promote(int userId, UserType userType, CancellationToken cancellationToken = default);
         Task Register(string username, string email, string passwordHash, CancellationToken cancellationToken = default);
         Task SetPasswordAndNullifySession(int userId, string passwordHash, CancellationToken cancellationToken = default);
         Task SetResetToken(int userId, byte[] resetToken, CancellationToken cancellationToken = default);

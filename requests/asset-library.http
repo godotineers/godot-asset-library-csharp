@@ -1,0 +1,66 @@
+// Settings
+##################################
+# Auth Controller                #
+##################################
+// @name auth_register
+POST {{baseUrl}}/auth/register HTTP/1.1
+Content-Type: multipart/form-data; boundary=---011000010111000001101001
+
+-----011000010111000001101001
+Content-Disposition: form-data; name="username"
+
+Username
+-----011000010111000001101001
+Content-Disposition: form-data; name="password"
+
+Password
+-----011000010111000001101001
+Content-Disposition: form-data; name="email"
+
+test@no-email.com
+-----011000010111000001101001--
+
+##################################
+// @name auth_login
+POST {{baseUrl}}/auth/login HTTP/1.1
+Content-Type: multipart/form-data; boundary=---011000010111000001101001
+
+-----011000010111000001101001
+Content-Disposition: form-data; name="username"
+
+Username
+-----011000010111000001101001
+Content-Disposition: form-data; name="password"
+
+Password
+-----011000010111000001101001--
+  
+##################################
+// @name auth_configure
+GET {{baseUrl}}/auth/configure HTTP/1.1
+
+##################################
+
+@userToken = {{auth_login.response.body.token}}
+
+##################################
+# Users Controller               #
+##################################
+// User/Feed
+GET {{baseUrl}}/user/feed?max_results=50&page=0 HTTP/1.1
+Token: {{userToken}}
+##################################
+
+##################################
+# Assets Controller              #
+##################################
+// @name asset_getassets
+GET {{baseUrl}}/asset HTTP/1.1
+Token: {{userToken}}
+
+
+##################################
+
+##################################
+# Asset Edits Controller         #
+##################################

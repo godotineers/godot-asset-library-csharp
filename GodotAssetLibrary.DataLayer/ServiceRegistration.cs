@@ -9,6 +9,9 @@ namespace GodotAssetLibrary.DataLayer
         public static IServiceCollection AddDataLayer(this IServiceCollection services, Action<DbContextOptionsBuilder> contextOptions)
         {
             services.AddDbContext<IAssetLibraryContext, AssetLibraryContext>(options => contextOptions(options));
+            services.AddScoped<IAssetEditService, AssetEditService>();
+            services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUserService, UserService>();
 
             return services;

@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Enums;
 using GodotAssetLibrary.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,6 +79,17 @@ namespace GodotAssetLibrary.DataLayer.Services
             });
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task Promote(int userId, UserType userType, CancellationToken cancellationToken = default)
+        {
+            var user = await GetUserById(userId, cancellationToken);
+            if (user != null)
+            {
+                user.Type = userType;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+using GodotAssetLibrary.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -42,10 +42,10 @@ namespace GodotAssetLibrary.Domain
         public int Rating { get; set; }
 
         [Column("support_level")]
-        public int SupportLevel { get; set; }
+        public SupportLevel SupportLevel { get; set; }
 
         [Column("download_provider")]
-        public int DownloadProvider { get; set; }
+        public DownloadProvider DownloadProvider { get; set; }
 
         [Required]
         [Column("download_commit")]

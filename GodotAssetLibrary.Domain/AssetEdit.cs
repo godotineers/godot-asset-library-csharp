@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -35,7 +36,7 @@ namespace GodotAssetLibrary.Domain
         public string Cost { get; set; }
 
         [Column("download_provider")]
-        public byte? DownloadProvider { get; set; }
+        public DownloadProvider DownloadProvider { get; set; }
 
         [Column("download_commit")]
         public string DownloadCommit { get; set; }
@@ -50,7 +51,7 @@ namespace GodotAssetLibrary.Domain
         public string IconUrl { get; set; }
 
         [Column("status")]
-        public int Status { get; set; }
+        public EditStatus Status { get; set; }
 
         [Required]
         [Column("reason", TypeName = "text")]

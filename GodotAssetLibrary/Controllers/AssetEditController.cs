@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 // ... other necessary using directives ...
@@ -25,6 +26,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet("edit/{id:int}/edit")]
+        [Authorize]
         public IActionResult EditAsset(int id)
         {
             // TODO: Implement the logic to edit a specific asset
@@ -32,6 +34,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CreateAsset(/* parameters here */)
         {
             // TODO: Implement the logic to create a new asset
@@ -39,6 +42,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("{id:int}")]
+        [Authorize]
         public IActionResult UpdateAsset(int id)
         {
             // TODO: Implement the logic to update an existing asset
@@ -46,6 +50,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("edit/{id:int}")]
+        [Authorize]
         public IActionResult SubmitAssetEdit(int id)
         {
             // TODO: Implement the logic to submit an asset edit
@@ -60,6 +65,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("edit/{id:int}/review")]
+        [Authorize(Roles = "Moderator")]
         public IActionResult ReviewAssetEdit(int id)
         {
             // TODO: Implement the logic to review an asset edit
@@ -67,6 +73,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("edit/{id:int}/reject")]
+        [Authorize(Roles = "Moderator")]
         public IActionResult RejectAssetEdit(int id)
         {
             // TODO: Implement the logic to reject an asset edit

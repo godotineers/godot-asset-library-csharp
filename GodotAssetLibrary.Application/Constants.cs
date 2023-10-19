@@ -4,21 +4,6 @@ using System.Collections.Generic;
 
 namespace GodotAssetLibrary.Application
 {
-    public enum EditStatus
-    {
-        New = 0, // corresponds to 'new' => 0
-        InReview = 1, // corresponds to 'in_review' => 1
-        Accepted = 2, // corresponds to 'accepted' => 2
-        Rejected = 3 // corresponds to 'rejected' => 3
-    }
-
-    public enum EditPreviewOperation
-    {
-        Insert = 0, // corresponds to 'insert' => 0
-        Remove = 1, // corresponds to 'remove' => 1
-        Update = 2 // corresponds to 'update' => 2
-    }
-
     // For enums that need to associate with strings, you might need a different approach, such as a class with constant strings or a method to retrieve the string based on the enum value.
     public static class CategoryType
     {
@@ -26,33 +11,6 @@ namespace GodotAssetLibrary.Application
         public const string Project = "1"; // corresponds to 'project' => '1'
         public const string Any = "%"; // corresponds to 'any' => '%'
     }
-
-    public enum SupportLevel
-    {
-        Testing = 0, // corresponds to 'testing' => 0
-        Community = 1, // corresponds to 'community' => 1
-        Official = 2 // corresponds to 'official' => 2
-    }
-
-    public enum UserType
-    {
-        Normal = 0, // corresponds to 'normal' => 0
-        Verified = 5, // corresponds to 'verified' => 5
-        Editor = 25, // corresponds to 'editor' => 25
-        Moderator = 50, // corresponds to 'moderator' => 50
-        Admin = 100 // corresponds to 'admin' => 100
-    }
-
-    public enum DownloadProvider
-    {
-        Custom = -1, // corresponds to 'Custom' => -1
-        GitHub = 0, // corresponds to 'GitHub' => 0
-        GitLab = 1, // corresponds to 'GitLab' => 1
-        BitBucket = 2, // corresponds to 'BitBucket' => 2
-        GogsGiteaCodeberg = 3, // corresponds to 'Gogs/Gitea/Codeberg' => 3
-        Cgit = 4 // corresponds to 'cgit' => 4
-    }
-
 
     public static class Constants
     {

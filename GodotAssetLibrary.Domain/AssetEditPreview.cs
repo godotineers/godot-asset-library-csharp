@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,7 +27,7 @@ namespace GodotAssetLibrary.Domain
         public string Thumbnail { get; set; }
 
         [Column("operation")]
-        public byte Operation { get; set; }
+        public EditPreviewOperation Operation { get; set; }
 
         public AssetPreview Preview { get; set; }
     }

@@ -1,7 +1,8 @@
 using GodotAssetLibrary.Contracts;
+using GodotAssetLibrary.Infrastructure;
 using Microsoft.Extensions.Options;
 
-namespace GodotAssetLibrary.Common.Password
+namespace GodotAssetLibrary.Infrastructure.Password
 {
     internal class PasswordUtility : IPasswordUtility
     {
@@ -14,7 +15,7 @@ namespace GodotAssetLibrary.Common.Password
 
         public string Generate(string initialPassword)
         {
-            return BCrypt.Net.BCrypt.HashPassword(initialPassword, workFactor: this.Options.Value.WorkFactor);
+            return BCrypt.Net.BCrypt.HashPassword(initialPassword, workFactor: Options.Value.WorkFactor);
         }
 
         public bool Verify(string initialPassword, string passwordHash)

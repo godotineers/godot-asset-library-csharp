@@ -1,9 +1,11 @@
+using GodotAssetLibrary.Common;
+using GodotAssetLibrary.Common.Enums;
 using GodotAssetLibrary.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
-    public class AssetEditService
+    internal class AssetEditService : IAssetEditService
     {
         private readonly IAssetLibraryContext _context;
 
@@ -26,7 +28,7 @@ namespace GodotAssetLibrary.DataLayer.Services
             return _context.AssetEdits.Find(editId);
         }
 
-        public AssetEdit? GetAssetEditWithStatus(int editId, int status)
+        public AssetEdit? GetAssetEditWithStatus(int editId, EditStatus status)
         {
             return _context.AssetEdits.SingleOrDefault(a => a.EditId == editId && a.Status == status);
         }
@@ -127,7 +129,7 @@ namespace GodotAssetLibrary.DataLayer.Services
             }
         }
 
-        public async Task SetAssetEditStatusAndReason(int editId, int status, string reason, CancellationToken cancellationToken = default)
+        public async Task SetAssetEditStatusAndReason(int editId, EditStatus status, string reason, CancellationToken cancellationToken = default)
         {
             var assetEdit = _context.AssetEdits.Find(editId);
             if (assetEdit != null)
@@ -136,6 +138,33 @@ namespace GodotAssetLibrary.DataLayer.Services
                 assetEdit.Reason = reason;
                 await _context.SaveChangesAsync(cancellationToken);
             }
+        }
+
+
+        public async Task<IEnumerable<EditEvent>> ListEditEvents(int userId, int pageSize, int skipCount, CancellationToken cancellationToken = default)
+        {
+            var query = _context.AssetEdits
+                .Where(edit => edit.UserId == userId)  // Filtering by user_id
+                .OrderByDescending(edit => edit.ModifyDate)  // Ordering by modify_date
+                .Select(edit => new EditEvent // Projecting to a new result form, similar to the SELECT statement in SQL
+                {
+                    EditId = edit.EditId,
+                    AssetId = edit.AssetId,
+                    Title = edit.Title ?? edit.Asset.Title,  // COALESCE equivalent
+                    SubmitDate = edit.SubmitDate,
+                    ModifyDate = edit.ModifyDate,
+                    Category = edit.Category.CategoryName,  // Assuming you have navigation properties set up correctly
+                    VersionString = edit.VersionString ?? edit.Asset.VersionString,  // COALESCE equivalent
+                    IconUrl = edit.IconUrl ?? edit.Asset.IconUrl,  // COALESCE equivalent
+                    Status = edit.Status.ToString(),
+                    Reason = edit.Reason
+                });
+
+            // Apply paging
+            return await query
+                .Skip(skipCount)
+                .Take(pageSize)
+                .ToListAsync();
         }
     }
 }

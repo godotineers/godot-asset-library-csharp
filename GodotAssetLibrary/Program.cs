@@ -1,6 +1,9 @@
 using GodotAssetLibrary.Application;
-using GodotAssetLibrary.Common;
+using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.DataLayer;
+using GodotAssetLibrary.Infrastructure;
+using GodotAssetLibrary.Middleware;
+using GodotAssetLibrary.Providers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +18,14 @@ builder.Services.AddDataLayer(options =>
     });
 
 builder.Services.AddApplicationLayer();
-builder.Services.AddCommonLayer()
+builder.Services.AddInfrastructureLayer()
             .ConfigureAuthCryptoOptions(options => builder.Configuration.GetSection("AuthCrypto").Bind(options));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IClaimsProvider, HttpContextClaimsProvider>();
 
 var app = builder.Build();
 
@@ -33,9 +40,23 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseGodotApiInterceptor();
+app.UseUserTokenAuthenticator();
+
+// Redirect to asset controller
+app.Use((context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Request.Path = context.Request.Path.Add("/asset");
+    }
+    return next(context);
+});
+
 app.UseRouting();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

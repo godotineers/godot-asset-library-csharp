@@ -1,6 +1,7 @@
 using CommunityToolkit.Diagnostics;
 using GodotAssetLibrary.Application.Commands.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GodotAssetLibrary.Controllers
@@ -18,9 +19,9 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet("configure")]
-        public IActionResult Configure(Configure configure)
+        public async Task<IActionResult> Configure(Configure configure)
         {
-            throw new NotImplementedException();
+            return Ok(await Mediator.Send(configure));
         }
 
         [HttpPost("register")]
@@ -44,6 +45,7 @@ namespace GodotAssetLibrary.Controllers
 
         [HttpGet("logout")]
         [HttpPost("logout")]
+        [Authorize]
         public IActionResult Logout(Logout logout)
         {
             throw new NotImplementedException();
@@ -62,12 +64,14 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("reset_password")]
+        [Authorize]
         public IActionResult PostResetPassword(/* parameters here */)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost("change_password")]
+        [Authorize]
         public IActionResult ChangePassword(/* parameters here */)
         {
             throw new NotImplementedException();

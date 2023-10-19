@@ -1,4 +1,4 @@
-namespace GodotAssetLibrary.Common
+namespace GodotAssetLibrary.Infrastructure
 {
     public class AuthCryptoOptions
     {

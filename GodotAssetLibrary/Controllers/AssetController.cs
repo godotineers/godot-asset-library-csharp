@@ -1,5 +1,6 @@
 using GodotAssetLibrary.Application.Commands.Assets;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GodotAssetLibrary.Controllers
@@ -16,9 +17,9 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAssets()
+        public async Task<IActionResult> GetAssets(GetAssets getAssets)
         {
-            return Ok(await Mediator.Send(new GetAssets { }));
+            return Ok(await Mediator.Send(getAssets));
         }
 
         [HttpGet("{id:int}")]
@@ -28,6 +29,7 @@ namespace GodotAssetLibrary.Controllers
         }
 
         [HttpPost("{id:int}/support_level")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> UpdateSupportLevel(int id)
         {
             return Ok(await Mediator.Send(new UpdateSupportLevel { AssetId = id }));

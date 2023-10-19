@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,7 +24,7 @@ namespace GodotAssetLibrary.Domain
         public string PasswordHash { get; set; }
 
         [Column("type")]
-        public byte Type { get; set; }
+        public UserType Type { get; set; }
 
         [Column("session_token")]
         public byte[]? SessionToken { get; set; }

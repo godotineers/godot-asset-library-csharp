@@ -1,4 +1,4 @@
-namespace GodotAssetLibrary.Domain
+namespace GodotAssetLibrary.Common.Enums
 {
     public enum CategoryTypes
     {

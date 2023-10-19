@@ -1,8 +1,10 @@
+using GodotAssetLibrary.Common.Enums;
 using GodotAssetLibrary.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
-    public class CategoryService
+    internal class CategoryService : ICategoryService
     {
         private readonly IAssetLibraryContext _context;
 
@@ -11,12 +13,12 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
-        public IEnumerable<Category> ListCategoriesByType(CategoryTypes categoryType)
+        public async Task<IEnumerable<Category>> ListCategoriesByType(CategoryTypes categoryType, CancellationToken cancellationToken = default)
         {
-            return _context.Categories
+            return await _context.Categories
                            .Where(c => c.CategoryType == categoryType)
                            .OrderBy(c => c.CategoryId)
-                           .ToList();
+                           .ToListAsync(cancellationToken);
         }
     }
 }

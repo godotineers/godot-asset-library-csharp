@@ -1,9 +1,10 @@
+using GodotAssetLibrary.Common.Enums;
 using GodotAssetLibrary.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace GodotAssetLibrary.DataLayer.Services
 {
-    public class AssetService
+    internal class AssetService : IAssetService
     {
         private readonly IAssetLibraryContext _context;
 
@@ -12,34 +13,57 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
-        public IEnumerable<Asset> SearchAssets(
-            int category,
-            CategoryTypes categoryType,
-            string supportLevelsRegex,
-            string username,
-            string cost,
+        public async Task<IEnumerable<Asset>> SearchAssets(
+            int? category,
+            CategoryTypes? categoryType,
+            SupportLevel[]? supportLevels,
+            string? username,
+            string? cost,
             int maxGodotVersion,
             int minGodotVersion,
             string filter,
             string order,
             string orderDirection,
             int pageSize,
-            int skipCount)
+            int skipCount,
+            CancellationToken cancellationToken = default)
         {
             var query = _context.Assets
                 .Include(a => a.User)
                 .Include(a => a.Category)
                 .Where(a => a.Searchable == true
-                    && a.CategoryId == category
-                    && a.Category.CategoryType == categoryType
-                    && EF.Functions.Like(a.SupportLevel.ToString(), supportLevelsRegex)
-                    && EF.Functions.Like(a.User.Username, username)
-                    && EF.Functions.Like(a.Cost, cost)
                     && a.GodotVersion <= maxGodotVersion
                     && a.GodotVersion >= minGodotVersion
                     && (EF.Functions.Like(a.Title, filter)
                         || EF.Functions.Like(a.Cost, filter)
                         || EF.Functions.Like(a.User.Username, filter)));
+
+
+            if (category.HasValue)
+            {
+                query = query.Where(a => a.CategoryId == category);
+            }
+
+            if (categoryType.HasValue)
+            {
+                query = query.Where(a => a.Category.CategoryType == categoryType);
+            }
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                query = query.Where(a => a.User.Username == username);
+            }
+
+            if (!string.IsNullOrEmpty(cost))
+            {
+                query = query.Where(a => a.Cost == cost);
+            }
+
+            if (supportLevels != null && supportLevels.Any())
+            {
+                query = query.Where(a => supportLevels.Any(x => x == a.SupportLevel));
+            }
+
 
             // OrderBy logic based on order and orderDirection parameters
             if (orderDirection == "asc")
@@ -80,34 +104,56 @@ namespace GodotAssetLibrary.DataLayer.Services
             }
 
             // Apply pagination
-            return query.Skip(skipCount).Take(pageSize).ToList();
+            return await query.Skip(skipCount).Take(pageSize).ToListAsync(cancellationToken);
         }
 
-        public int SearchAssetsCount(
-            int category,
-            CategoryTypes categoryType,
-            string supportLevelsRegex,
-            string username,
-            string cost,
+        public async Task<int> SearchAssetsCount(
+            int? category,
+            CategoryTypes? categoryType,
+            SupportLevel[]? supportLevels,
+            string? username,
+            string? cost,
             int maxGodotVersion,
             int minGodotVersion,
-            string filter)
+            string filter,
+            CancellationToken cancellationToken = default)
         {
-            return _context.Assets
+            var query = _context.Assets
                 .Include(a => a.User)
                 .Include(a => a.Category)
                 .Where(a => a.Searchable == true
-                    && a.Category.CategoryType == categoryType
-                    && a.CategoryId == category
-                    && EF.Functions.Like(a.SupportLevel.ToString(), supportLevelsRegex)
-                    && EF.Functions.Like(a.User.Username, username)
-                    && EF.Functions.Like(a.Cost, cost)
                     && a.GodotVersion <= maxGodotVersion
                     && a.GodotVersion >= minGodotVersion
                     && (EF.Functions.Like(a.Title, filter)
                         || EF.Functions.Like(a.Cost, filter)
-                        || EF.Functions.Like(a.User.Username, filter)))
-                .Count();
+                        || EF.Functions.Like(a.User.Username, filter)));
+
+            if (category.HasValue)
+            {
+                query = query.Where(a => a.CategoryId == category);
+            }
+
+            if (categoryType.HasValue)
+            {
+                query = query.Where(a => a.Category.CategoryType == categoryType);
+            }
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                query = query.Where(a => a.User.Username == username);
+            }
+
+            if (!string.IsNullOrEmpty(cost))
+            {
+                query = query.Where(a => a.Cost == cost);
+            }
+
+            if (supportLevels != null && supportLevels.Any())
+            {
+                query = query.Where(a => supportLevels.Any(x => x == a.SupportLevel));
+            }
+
+            return await query.CountAsync(cancellationToken);
         }
 
         public async Task CreateAsset(Asset asset, CancellationToken cancellationToken = default)
@@ -116,23 +162,23 @@ namespace GodotAssetLibrary.DataLayer.Services
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Asset? GetAssetById(int id)
+        public async Task<Asset?> GetAssetById(int id, CancellationToken cancellationToken = default)
         {
-            return _context.Assets
+            return await _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.User)
                 .Include(a => a.Preview)
-                .SingleOrDefault(a => a.AssetId == id);
+                .SingleOrDefaultAsync(a => a.AssetId == id);
         }
 
-        public Asset? GetAssetBare(int assetId)
+        public async Task<Asset?> GetAssetBare(int assetId, CancellationToken cancellationToken = default)
         {
-            return _context.Assets.Find(assetId);
+            return await _context.Assets.FindAsync(assetId);
         }
 
-        public AssetPreview? GetAssetPreviewBare(int previewId)
+        public async Task<AssetPreview?> GetAssetPreviewBare(int previewId, CancellationToken cancellationToken = default)
         {
-            return _context.AssetPreviews.Find(previewId);
+            return await _context.AssetPreviews.FindAsync(previewId);
         }
 
         public async Task ApplyCreationalEdit(Asset asset, CancellationToken cancellationToken = default)
@@ -169,7 +215,7 @@ namespace GodotAssetLibrary.DataLayer.Services
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task SetSupportLevel(int assetId, int supportLevel, CancellationToken cancellationToken = default)
+        public async Task SetSupportLevel(int assetId, SupportLevel supportLevel, CancellationToken cancellationToken = default)
         {
             var asset = _context.Assets.Find(assetId);
             if (asset != null)

@@ -1,15 +1,17 @@
+using GodotAssetLibrary.Common.User;
 using GodotAssetLibrary.Contracts;
+using GodotAssetLibrary.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
-namespace GodotAssetLibrary.Common.Session
+namespace GodotAssetLibrary.Infrastructure.Session
 {
-    internal class SessionUtility : ISessionUtility
+    internal class TokenUtility : ITokenUtility
     {
-        public SessionUtility(IOptions<AuthCryptoOptions> options)
+        public TokenUtility(IOptions<AuthCryptoOptions> options)
         {
             Options = options;
         }
@@ -18,7 +20,7 @@ namespace GodotAssetLibrary.Common.Session
 
         public byte[] GenerateSessionId()
         {
-            byte[] id = new byte[this.Options.Value.TokenSessionBytesLength];
+            byte[] id = new byte[Options.Value.TokenSessionBytesLength];
 
             using (var rng = RandomNumberGenerator.Create())
             {
@@ -30,7 +32,7 @@ namespace GodotAssetLibrary.Common.Session
 
         public byte[] GenerateResetId()
         {
-            byte[] id = new byte[this.Options.Value.TokenResetBytesLength];
+            byte[] id = new byte[Options.Value.TokenResetBytesLength];
 
             using (var rng = RandomNumberGenerator.Create())
             {
@@ -59,7 +61,7 @@ namespace GodotAssetLibrary.Common.Session
 
         public byte[] SignToken(string tokenPayload)
         {
-            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(this.Options.Value.SecretKey)))
+            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Options.Value.SecretKey)))
             {
                 return hmac.ComputeHash(Encoding.UTF8.GetBytes(tokenPayload));
             }
@@ -80,7 +82,7 @@ namespace GodotAssetLibrary.Common.Session
             var tokenPayload = $"{tokenParts[0]}&{tokenParts[1]}";
 
             if (!StructuralComparisons.StructuralEqualityComparer.Equals(tokenSignature, SignToken(tokenPayload)) ||
-                DateTime.UtcNow > DateTime.FromBinary(tokenTime).AddSeconds(Convert.ToDouble(this.Options.Value.TokenExpirationTime)))
+                DateTime.UtcNow > DateTime.FromBinary(tokenTime).AddSeconds(Convert.ToDouble(Options.Value.TokenExpirationTime)))
             {
                 return null;
             }

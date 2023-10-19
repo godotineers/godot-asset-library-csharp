@@ -1,3 +1,12 @@
 {
-    "cmake.configureOnOpen": false
+    "rest-client.environmentVariables": {
+        "$shared": {
+        },
+        "frontend":{
+            "baseUrl":"https://localhost:7191"
+        },
+        "api":{
+            "baseUrl":"https://localhost:7191/api"
+        }
+    }
 }

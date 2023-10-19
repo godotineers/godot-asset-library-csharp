@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\GodotAssetLibrary.Common\GodotAssetLibrary.Common.csproj" />
+	</ItemGroup>
+
 </Project>

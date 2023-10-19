@@ -18,6 +18,7 @@
 		<ProjectReference Include="..\GodotAssetLibrary.Common\GodotAssetLibrary.Common.csproj" />
 		<ProjectReference Include="..\GodotAssetLibrary.DataLayer\GodotAssetLibrary.DataLayer.csproj" />
 		<ProjectReference Include="..\GodotAssetLibrary.Domain\GodotAssetLibrary.Domain.csproj" />
+		<ProjectReference Include="..\GodotAssetLibrary.Infrastructure\GodotAssetLibrary.Infrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
