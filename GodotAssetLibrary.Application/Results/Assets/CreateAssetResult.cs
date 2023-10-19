@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GodotAssetLibrary.Application.Results.AssetEdit
+namespace GodotAssetLibrary.Application.Results.Assets
 {
     public class CreateAssetResult
     {

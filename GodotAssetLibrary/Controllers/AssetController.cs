@@ -29,6 +29,20 @@ namespace GodotAssetLibrary.Controllers
             return View("Asset", await Mediator.Send(new GetAssetById { AssetId = id }));
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateAsset(CreateAsset createAsset)
+        {
+            return Ok(await Mediator.Send(createAsset));
+        }
+
+        [HttpPost("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAsset(int id, UpdateAsset updateAsset)
+        {
+            return Ok(await Mediator.Send(updateAsset));
+        }
+
         [HttpPost("{id:int}/support_level")]
         [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> UpdateSupportLevel(int id)

@@ -1,7 +1,7 @@
-using GodotAssetLibrary.Application.Results.AssetEdit;
+using GodotAssetLibrary.Application.Results.Assets;
 using MediatR;
 
-namespace GodotAssetLibrary.Application.Commands.AssetEdit
+namespace GodotAssetLibrary.Application.Commands.Assets
 {
     public class CreateAsset : IRequest<CreateAssetResult>
     {
