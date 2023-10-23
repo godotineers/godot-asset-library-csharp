@@ -1,6 +1,7 @@
 using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.Infrastructure;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
 
 namespace GodotAssetLibrary.Infrastructure.Password
 {
@@ -21,6 +22,19 @@ namespace GodotAssetLibrary.Infrastructure.Password
         public bool Verify(string initialPassword, string passwordHash)
         {
             return BCrypt.Net.BCrypt.Verify(initialPassword, passwordHash);
+        }
+
+
+        public byte[] GenerateResetToken()
+        {
+            byte[] id = new byte[Options.Value.TokenResetBytesLength];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(id);
+            }
+
+            return id;
         }
     }
 }

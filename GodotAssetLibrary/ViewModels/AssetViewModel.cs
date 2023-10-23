@@ -1,4 +1,5 @@
 using GodotAssetLibrary.Common.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GodotAssetLibrary.Application.ViewModels
 {
@@ -8,7 +9,7 @@ namespace GodotAssetLibrary.Application.ViewModels
         public bool Searchable { get; set; }
         public string Title { get; set; }
         public string VersionString { get; set; }
-        public string GodotVersion {  get; set; }
+        public string GodotVersion { get; set; }
         public string Category { get; set; }
 
         public SupportLevel SupportLevel { get; set; }
@@ -25,10 +26,20 @@ namespace GodotAssetLibrary.Application.ViewModels
 
         public string BrowseUrl { get; set; }
 
+        public DownloadProvider DownloadProvider { get; set; }
+
+        public string RepositoryUrl { get; set; }
+
         public string DownloadUrl { get; set; }
+
+        public string DownloadCommit { get; set; }
 
         public string IssuesUrl { get; set; }
 
-        public IEnumerable<AssetPreviewViewModel> Previews { get; set; } = Array.Empty<AssetPreviewViewModel>();
+        public IList<AssetPreviewViewModel> Previews { get; set; } = Array.Empty<AssetPreviewViewModel>();
+
+        public IEnumerable<SelectListItem> Categories { get; set; }
+        public IEnumerable<SelectListItem> Licenses { get; set; }
+        public IEnumerable<SelectListItem> GodotVersions { get; set; }
     }
 }

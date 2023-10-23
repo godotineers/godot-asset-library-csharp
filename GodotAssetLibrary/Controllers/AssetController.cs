@@ -1,5 +1,7 @@
 using GodotAssetLibrary.Application.Commands.Assets;
+using GodotAssetLibrary.Application.ViewModels;
 using GodotAssetLibrary.Attributes;
+using GodotAssetLibrary.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,7 @@ namespace GodotAssetLibrary.Controllers
 {
     [Route("asset")]
     [Controller]
-    public class AssetController : Controller
+    public class AssetController : Controller, IAssetController
     {
         public IMediator Mediator { get; }
 
@@ -37,6 +39,16 @@ namespace GodotAssetLibrary.Controllers
         public async Task<IActionResult> CreateAsset(CreateAsset createAsset)
         {
             return Ok(await Mediator.Send(createAsset));
+        }
+
+        [HttpGet("submit")]
+        [BindSelectItemsToViewBag]
+        public async Task<IActionResult> SubmitAssetForm()
+        {
+            return View("SubmitAsset", new AssetViewModel()
+            {
+
+            });
         }
 
         [HttpPost("{id:int}")]

@@ -4,5 +4,7 @@ namespace GodotAssetLibrary.Contracts
     {
         string Generate(string initialPassword);
         bool Verify(string initialPassword, string passwordHash);
+
+        byte[] GenerateResetToken();
     }
 }

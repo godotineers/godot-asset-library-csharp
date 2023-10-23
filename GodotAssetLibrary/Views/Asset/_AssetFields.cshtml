@@ -1,0 +1,112 @@
+@model AssetViewModel
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="title">Asset Name</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.Title, new { @class = "form-control input-md", placeholder="One-button game creation tool" })
+        <!-- <span class="help-block">The name of the asset.</span> -->
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="description">Description</label>
+    <div class="col-md-5">
+        @Html.TextAreaFor(x=>x.Description, new { @class = "form-control input-md", rows = 7, placeholder="This tool allows you to make games with the click of a button.\nIt supports..." })
+        <!-- <span class="help-block">The description which would be visible on the asset page.</span> -->
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="category">Category</label>
+    <div class="col-md-5">
+        @Html.DropDownListFor(x=>x.Category, ViewBag.Categories as IEnumerable<SelectListItem>, new { @class = "form-control input-md" })
+        <!-- <span class="help-block">The category the asset belongs to.</span> -->
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="license">License</label>
+    <div class="col-md-5">
+        @Html.DropDownListFor(x=>x.Cost, ViewBag.Licenses as IEnumerable<SelectListItem>, new { @class = "form-control input-md" })
+        <span class="help-block">The license under which the asset is available. Check <a href="https://opensource.org/licenses">opensource.org</a> for a more detailed description of each. In case an OSI-approved license you are using is missing, you might <a href="https://github.com/godotengine/asset-library/issues">open an issue</a> about it.</span>
+        <span class="help-block"><strong>Note:</strong> The license you specify here should also be included in the repository you are submitting under a standard name, such as LICENSE or LICENSE.md</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="download_provider">Repository host</label>
+    <div class="col-md-5">
+        @Html.DropDownListFor(x=>x.DownloadProvider, Html.GetEnumSelectList<DownloadProvider>().AddPlaceholder("Select..."), new { @class = "form-control input-md" })
+        <span class="help-block">
+            The site or service hosting your repository.<br>
+            The <strong>Custom</strong> download provider can be used to link to premade ZIP archives, such as those uploaded on GitHub Releases. This is useful for GDNative/GDExtension add-ons which contain precompiled binaries. This can also be useful when <a href="https://stackoverflow.com/questions/14783127/git-archive-export-with-submodules-git-archive-all-recursive">including submodules in the ZIP</a> is desired (as submodules are <em>not</em> included in automatically generated ZIPs from GitHub or GitLab).<br>
+            If your repository host is missing, you might like to <a href="https://github.com/godotengine/asset-library/issues">open an issue</a> about it.
+        </span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="browse">Repository URL</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.RepositoryUrl, new { @class = "form-control input-md", placeholder="https://host.example/user/repository" })
+        <span class="help-block">The URL you use to browse your repository.</span>
+        <span class="help-block"><strong>Note:</strong> Do not give the clone URL (the one that ends in <code>.git</code>), but give the one you use to browse your code.</span>
+        <span class="help-block">When using the <strong>Custom</strong> download provider, this is used for browsing only.</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label" for="issues">Issues URL</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.IssuesUrl, new { @class = "form-control input-md", placeholder="https://host.example/user/repository/issues" })
+        <span class="help-block">Optional, in case you are not using the one supplied by the repository host. Leave empty if unsure.</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="godot_version">Godot version</label>
+    <div class="col-md-5">
+        @Html.DropDownListFor(x=>x.GodotVersion, ViewBag.GodotVersions as IEnumerable<SelectListItem>, new {@class = "form-control" })
+        <!-- <span class="help-block">The version of Godot the asset works with.</span> -->
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="version">Asset Version</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.VersionString, new {@class = "form-control input-md", placeholder="e.g. 1.0.0 or 1.0"})
+        <!-- <span class="help-block">A human-readable version of the asset, e.g. <code>1.0</code> or <code>1.0.0</code>.</span> -->
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="commit">Download Commit/URL</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.DownloadCommit, new {@class = "form-control input-md", placeholder="Git commit hash (or download URL if using Custom download provider)"})
+        <span class="help-block">The commit hash that should be downloaded. Expects 40 or 64 hexadecimal digits <em>fully</em> specifying a Git commit.</span>
+        <span class="help-block">When using the <strong>Custom</strong> download provider, this must be set to the full download URL instead of a commit hash.</span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label required_mark" for="icon">Icon URL</label>
+    <div class="col-md-5">
+        @Html.TextBoxFor(x=>x.IconUrl, new {@class = "form-control input-md", placeholder="https://host.example/user/repository/raw/icon.(png|jpg)" })
+    </div>
+</div>
+
+@for (int i = 0; i < (Model.Previews.Count + 3); i++)
+{
+    AssetPreviewViewModel preview;
+    if (i < Model.Previews.Count)
+    {
+        preview = Model.Previews[i];
+    }
+    else
+    {
+        preview = new();
+    }
+
+    @await Html.PartialAsync("_AssetPreviewFields", preview)
+    ;
+}

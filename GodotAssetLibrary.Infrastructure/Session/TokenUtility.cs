@@ -1,6 +1,4 @@
-using GodotAssetLibrary.Common.User;
 using GodotAssetLibrary.Contracts;
-using GodotAssetLibrary.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using System.Security.Cryptography;
@@ -9,7 +7,7 @@ using System.Text.Json;
 
 namespace GodotAssetLibrary.Infrastructure.Session
 {
-    internal class TokenUtility : ITokenUtility
+    internal class TokenUtility<TToken> : ITokenUtility<TToken>
     {
         public TokenUtility(IOptions<AuthCryptoOptions> options)
         {
@@ -18,31 +16,7 @@ namespace GodotAssetLibrary.Infrastructure.Session
 
         public IOptions<AuthCryptoOptions> Options { get; }
 
-        public byte[] GenerateSessionId()
-        {
-            byte[] id = new byte[Options.Value.TokenSessionBytesLength];
-
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(id);
-            }
-
-            return id;
-        }
-
-        public byte[] GenerateResetId()
-        {
-            byte[] id = new byte[Options.Value.TokenResetBytesLength];
-
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(id);
-            }
-
-            return id;
-        }
-
-        public string GenerateToken(TokenData tokenDataObj)
+        public string GenerateToken(TToken tokenDataObj)
         {
             var tokenData = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(tokenDataObj)));
             var tokenId = new byte[8];
@@ -59,7 +33,7 @@ namespace GodotAssetLibrary.Infrastructure.Session
             return token;
         }
 
-        public byte[] SignToken(string tokenPayload)
+        private byte[] SignToken(string tokenPayload)
         {
             using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Options.Value.SecretKey)))
             {
@@ -67,12 +41,12 @@ namespace GodotAssetLibrary.Infrastructure.Session
             }
         }
 
-        public TokenData? Validate(string token)
+        public TToken? Validate(string token)
         {
             var tokenParts = token.Split('&');
             if (tokenParts.Length != 3)
             {
-                return null;
+                return default;
             }
 
             var tokenData = Encoding.UTF8.GetString(Convert.FromBase64String(tokenParts[0]));
@@ -84,10 +58,10 @@ namespace GodotAssetLibrary.Infrastructure.Session
             if (!StructuralComparisons.StructuralEqualityComparer.Equals(tokenSignature, SignToken(tokenPayload)) ||
                 DateTime.UtcNow > DateTime.FromBinary(tokenTime).AddSeconds(Convert.ToDouble(Options.Value.TokenExpirationTime)))
             {
-                return null;
+                return default;
             }
 
-            return JsonSerializer.Deserialize<TokenData>(tokenData);
+            return JsonSerializer.Deserialize<TToken>(tokenData);
         }
     }
 }

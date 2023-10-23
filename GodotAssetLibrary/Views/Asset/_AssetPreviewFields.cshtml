@@ -1,0 +1,77 @@
+@model AssetPreviewViewModel
+
+<div class="panel panel-default">
+    <div class="panel-heading form-inline">
+        <div class="text-center">
+            <span class="panel-title">
+                <?php if($i < count($_asset_values['previews'])) {
+                if(isset($preview['edit_preview_id'])) {
+                echo 'Revise ' . raw($preview['operation']) . ' operation';
+                } else {
+                echo 'Update original preview';
+                }
+                } else {
+                echo 'Add preview';
+                } ?>
+            </span>
+
+            <?php if($i < count($_asset_values['previews'])) { ?>
+            <?php if(isset($preview['edit_preview_id'])) { // Existing edit ?>
+
+            <input type="hidden" name="previews[<?php echo $i ?>][edit_preview_id]" value="<?php echo esc($preview['edit_preview_id']) ?>">
+            <input type="hidden" name="previews[<?php echo $i ?>][enabled]" value="true">
+            <label>
+                <input type="checkbox" name="previews[<?php echo $i ?>][remove]" value="true">
+                Cancel
+            </label>
+
+            <?php } else { // From base asset ?>
+            <input type="hidden" name="previews[<?php echo $i ?>][preview_id]" value="<?php echo esc($preview['preview_id']) ?>">
+            <label>
+                <input type="checkbox" name="previews[<?php echo $i ?>][enabled]" value="true">
+                Enable
+            </label>
+            <label>
+                <input type="radio" name="previews[<?php echo $i ?>][operation]" value="update" checked="">
+                Update
+            </label>
+            <label>
+                <input type="radio" name="previews[<?php echo $i ?>][operation]" value="remove">
+                Remove
+            </label>
+
+            <?php } ?>
+            <?php } else { ?>
+            <input type="hidden" name="previews[<?php echo $i ?>][operation]" value="insert">
+            <label>
+                <input type="checkbox" name="previews[<?php echo $i ?>][enabled]" value="true" onchange="document.getElementById('previews[<?php echo $i ?>][link]').required = this.checked;">
+                Enable
+            </label>
+            <?php } ?>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="col-md-4 control-label required_mark" for="previews[<?php echo $i ?>][type]">Type</label>
+            <div class="col-md-5">
+                @Html.DropDownListFor(x=>x.Type, Html.GetEnumSelectList<AssetPreviewType>(), new {@class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label required_mark" for="previews[<?php echo $i ?>][link]">Image/YouTube Link</label>
+            <div class="col-md-5">
+                @Html.TextBoxFor(x=>x.Link, new {@class = "form-control input-md", placeholder="Image/YouTube Link" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="previews[<?php echo $i ?>][thumbnail]">Link to thumbnail</label>
+            <div class="col-md-5">
+                @Html.TextBoxFor(x=>x.Thumbnail, new {@class = "form-control input-md", placeholder = "Image Link" })
+            </div>
+        </div>
+
+    </div>
+</div>

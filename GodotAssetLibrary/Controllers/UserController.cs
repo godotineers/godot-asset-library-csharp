@@ -1,5 +1,6 @@
 using GodotAssetLibrary.Application.Commands.User;
 using GodotAssetLibrary.Attributes;
+using GodotAssetLibrary.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace GodotAssetLibrary.Controllers
     [Route("user")]
     [Controller]
     [Authorize]
-    public class UserController : Controller
+    public class UserController : Controller, IUserController
     {
         public UserController(
                     IMediator mediator)

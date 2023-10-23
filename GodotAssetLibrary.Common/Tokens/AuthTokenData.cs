@@ -1,6 +1,6 @@
 namespace GodotAssetLibrary.Common.User
 {
-    public class TokenData
+    public class AuthTokenData
     {
         public byte[] Session { get; set; }
 

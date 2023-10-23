@@ -9,11 +9,11 @@ namespace GodotAssetLibrary.Middleware
     public class UserTokenAuthenticatorMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ITokenUtility tokenUtility;
+        private readonly ITokenUtility<AuthTokenData> tokenUtility;
 
         public UserTokenAuthenticatorMiddleware(
                 RequestDelegate next,
-                ITokenUtility tokenUtility)
+                ITokenUtility<AuthTokenData> tokenUtility)
         {
             _next = next;
             this.tokenUtility = tokenUtility;
@@ -50,7 +50,7 @@ namespace GodotAssetLibrary.Middleware
             await _next(context);
         }
 
-        private bool TryParseToken(string tokenString, out TokenData? tokenData)
+        private bool TryParseToken(string tokenString, out AuthTokenData? tokenData)
         {
             tokenData = tokenUtility.Validate(tokenString);
             bool isValid = false;

@@ -1,49 +1,57 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Godot Asset Library</title>
-    <link href="/css/site.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- if on any page that is /edit include robots noindex -->
+    <title>@(ViewData.ContainsKey("Title") ? (@ViewData["Title"] + " - ") : string.Empty)Godot Asset Library</title>
+
+    <link href="~/css/bootstrap-3.4.1.min.css" rel="stylesheet">
+    <link href="~/css/base.css?7" rel="stylesheet">
 </head>
 <body>
     <header>
-        <nav>
-            <div>
-                <a href="@Url.Action("Index", "Home")">Home</a>
-                <a href="@Url.Action("Browse", "Asset")">Browse</a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="@Url.Action("Submit", "Asset")">Submit</a>
-                    <a href="@Url.Action("Profile", "User")">Profile</a>
-                    <a href="@Url.Action("Logout", "Auth")">Logout</a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Login", "Auth")">Login</a>
-                }
-            </div>
-            <div>
-                <form method="get" action="@Url.Action("Search", "Asset")">
-                    <input type="text" name="filter" placeholder="Search" value="@Context.Request.Query["filter"]">
-                </form>
-            </div>
-        </nav>
+        <!-- Navigation -->
+        @await Html.PartialAsync("_NavBar")        
     </header>
 
+    <main class="container">
     @RenderBody()
+    </main>
 
     <footer>
-        <p>
-            <span>&copy; 2016-present Juan Linietsky, Ariel Manzur.</span>
-            <span>The Godot Engine logo and the Godot name are trademarks of Ariel Manzur.</span>
-            <span>Website by Emilio Coppola and Hugo Locurcio.</span>
-            <span>Godot icons by Andrea Calabrò.</span>
-        </p>
-        <p>
-            <span>Contribute to the Godot Asset Library on <a href="https://github.com/godotengine/asset-library-laravel">GitHub</a>.</span>
-        </p>
+        <div class="container">
+            <div class="col-md-12">
+                <hr />
+                <p>
+                    Copyright &copy; @DateTime.Now.Year The Godot Engine community - MIT licensed
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <br><a href="@Url.Action("ChangePassword", "Auth")">Change Password</a>
+                    }
+
+                    <span class="text-muted pull-right">
+                        Currently running version <a href="@string.Format(Configuration.GetValue<string>("Git:CommitUrl"), @ThisAssembly.GitCommitId)">@ThisAssembly.GitCommitId[..7]</a>.
+                    </span>
+                </p>
+                <p class="text-muted text-right">
+                    Links:
+                    <a href="@(Configuration.GetValue<string>("Git:RepoUrl"))">GitHub repository</a> |
+                    <a href="@(Configuration.GetValue<string>("Git:IssuesUrl"))">Issues</a> |
+                    <a href="https://godotengine.org">Godot Engine homepage</a>
+                </p>
+            </div>
+        </div>
     </footer>
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script defer src="~/js/jquery-3.7.0.slim.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script defer src="~/js/bootstrap-3.4.1.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

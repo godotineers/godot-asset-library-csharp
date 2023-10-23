@@ -31,18 +31,6 @@ namespace GodotAssetLibrary.Infrastructure.Session
             return id;
         }
 
-        public byte[] GenerateResetId()
-        {
-            byte[] id = new byte[Options.Value.TokenResetBytesLength];
-
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(id);
-            }
-
-            return id;
-        }
-
         public UserData GetUserData()
         {
             var principal = ClaimsProvider.ClaimsPrincipal;

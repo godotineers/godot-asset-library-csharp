@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace GodotAssetLibrary.Contracts
 {
-    public interface ITokenUtility
+    public interface ITokenUtility<TToken>
     {
-        string GenerateToken(TokenData tokenData);
+        string GenerateToken(TToken tokenData);
 
-        byte[] SignToken(string tokenPayload);
-
-        TokenData? Validate(string token);
+        TToken? Validate(string token);
     }
 }

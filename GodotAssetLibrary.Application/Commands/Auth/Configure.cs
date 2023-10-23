@@ -17,7 +17,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
             public ConfigureHandler(
                         ICategoryService categoryService,
                         ISessionUtility sessionUtility,
-                        ITokenUtility tokenUtility)
+                        ITokenUtility<AuthTokenData> tokenUtility)
             {
                 CategoryService = categoryService;
                 SessionUtility = sessionUtility;
@@ -26,7 +26,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
 
             public ICategoryService CategoryService { get; }
             public ISessionUtility SessionUtility { get; }
-            public ITokenUtility TokenUtility { get; }
+            public ITokenUtility<AuthTokenData> TokenUtility { get; }
 
             public async Task<ConfigureResult> Handle(Configure request, CancellationToken cancellationToken)
             {
@@ -38,7 +38,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                 if (!string.IsNullOrWhiteSpace(request.Session))
                 {
                     var sessionId = SessionUtility.GenerateSessionId();
-                    var token = TokenUtility.GenerateToken(new TokenData
+                    var token = TokenUtility.GenerateToken(new AuthTokenData
                     {
                         Session = sessionId,
                     });

@@ -1,4 +1,6 @@
 using GodotAssetLibrary.Contracts;
+using GodotAssetLibrary.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -9,25 +11,34 @@ namespace GodotAssetLibrary.Attributes
     {
         public string ViewName { get; set; }
 
+        public Type Model { get; set; }
+
         public bool IsReusable => false;
+
 
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
-            return ActivatorUtilities.CreateInstance<FrontendViewBindFilter>(serviceProvider, new object[] { ViewName });
+            return ActivatorUtilities.CreateInstance<Filter>(serviceProvider, new object[] { ViewName, Model });
         }
 
-        private class FrontendViewBindFilter : IActionFilter
+        private class Filter : IActionFilter
         {
-            public FrontendViewBindFilter(
+            public Filter(
                     IRequestLifetime requestLifetime,
-                    string viewName)
+                    IMediator mediator,
+                    string viewName,
+                    Type modelType)
             {
                 RequestLifetime = requestLifetime;
+                Mediator = mediator;
                 ViewName = viewName;
+                ModelType = modelType;
             }
 
             public IRequestLifetime RequestLifetime { get; }
+            public IMediator Mediator { get; }
             public string ViewName { get; }
+            public Type ModelType { get; }
 
             public void OnActionExecuting(ActionExecutingContext context)
             {

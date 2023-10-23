@@ -71,7 +71,7 @@
     {
         <div class="col-xs-6 col-md-4 col-lg-3 text-center">
             <a href="@preview.Link" target="_blank" class="thumbnail">
-                @if (preview.Type == "image")
+                @if (preview.Type == AssetPreviewType.Image)
                 {
                     <img src="@preview.Link" width="100%" />
                 }

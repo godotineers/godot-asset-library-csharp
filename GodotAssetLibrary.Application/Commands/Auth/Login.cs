@@ -20,7 +20,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     IUserService userService,
                     IPasswordUtility passwordUtility,
                     ISessionUtility sessionUtility,
-                    ITokenUtility tokenUtility)
+                    ITokenUtility<AuthTokenData> tokenUtility)
             {
                 UserService = userService;
                 PasswordUtility = passwordUtility;
@@ -31,7 +31,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
             public IUserService UserService { get; }
             public IPasswordUtility PasswordUtility { get; }
             public ISessionUtility SessionUtility { get; }
-            public ITokenUtility TokenUtility { get; }
+            public ITokenUtility<AuthTokenData> TokenUtility { get; }
 
             public async Task<LoginResult> Handle(Login request, CancellationToken cancellationToken)
             {
@@ -72,7 +72,7 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     {
                         // no token, generate a new session
                         sessionId = SessionUtility.GenerateSessionId();
-                        token = TokenUtility.GenerateToken(new TokenData
+                        token = TokenUtility.GenerateToken(new AuthTokenData
                         {
                             Session = sessionId,
                             UserData = new UserData

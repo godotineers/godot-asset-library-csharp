@@ -1,5 +1,4 @@
 using GodotAssetLibrary.Application;
-using GodotAssetLibrary.Attributes;
 using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.DataLayer;
 using GodotAssetLibrary.Infrastructure;
@@ -21,6 +20,11 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer()
             .ConfigureAuthCryptoOptions(options => builder.Configuration.GetSection("AuthCrypto").Bind(options));
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "custom";
+});
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews();
@@ -30,7 +34,7 @@ builder.Services.AddMvc(options =>
 });
 
 builder.Services.AddScoped<IClaimsProvider, HttpContextClaimsProvider>();
-
+builder.Services.AddScoped<IUrlProvider, MvcUrlProvider>();
 
 var app = builder.Build();
 

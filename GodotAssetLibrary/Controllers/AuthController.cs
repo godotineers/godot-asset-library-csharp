@@ -1,6 +1,7 @@
 using CommunityToolkit.Diagnostics;
 using GodotAssetLibrary.Application.Commands.Auth;
 using GodotAssetLibrary.Attributes;
+using GodotAssetLibrary.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace GodotAssetLibrary.Controllers
 {
     [Route("auth")]
     [Controller]
-    public class AuthController : Controller
+    public class AuthController : Controller, IAuthController
     {
         public IMediator Mediator { get; }
 

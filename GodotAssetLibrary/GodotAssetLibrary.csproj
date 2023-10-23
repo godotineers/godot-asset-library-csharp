@@ -21,8 +21,4 @@
 		<ProjectReference Include="..\GodotAssetLibrary.Infrastructure\GodotAssetLibrary.Infrastructure.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Models\" />
-	</ItemGroup>
-
 </Project>

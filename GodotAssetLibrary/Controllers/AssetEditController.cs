@@ -1,5 +1,6 @@
 using GodotAssetLibrary.Application.Commands.AssetEdit;
 using GodotAssetLibrary.Attributes;
+using GodotAssetLibrary.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace GodotAssetLibrary.Controllers
 {
     [Route("asset/edit")]
     [Controller]
-    public class AssetEditController : Controller
+    public class AssetEditController : Controller, IAssetEditController
     {
         public IMediator Mediator { get; }
 

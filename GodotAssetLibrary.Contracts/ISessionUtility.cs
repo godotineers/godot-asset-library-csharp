@@ -8,8 +8,6 @@ namespace GodotAssetLibrary.Contracts
     {
         byte[] GenerateSessionId();
 
-        byte[] GenerateResetId();
-
         UserData GetUserData();
     }
 }

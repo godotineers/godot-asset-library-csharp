@@ -6,10 +6,10 @@ namespace GodotAssetLibrary.Infrastructure
 
         public string SecretKey { get; set; }
 
-        public int TokenExpirationTime { get; set; }
+        public int TokenExpirationTime { get; set; } = 15552000;
 
-        public int TokenSessionBytesLength { get; set; }
+        public int TokenSessionBytesLength { get; set; } = 24;
 
-        public int TokenResetBytesLength { get; set; }
+        public int TokenResetBytesLength { get; set; } = 32;
     }
 }

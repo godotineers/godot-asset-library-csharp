@@ -1,0 +1,46 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand logo-light" href="https://godotengine.org" style="padding: 7px;"><img alt="Godot" src="~/logo.svg" height="100%" style="display: inline"> </a>
+            <a class="navbar-brand logo-dark" href="https://godotengine.org" style="padding: 7px;"><img alt="Godot" src="~/logo_dark.svg" height="100%" style="display: inline"> </a>
+            <a class="navbar-brand" href="@Url.Action("Assets", "Asset")" style="padding: 14px;">| Asset Library</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-left">
+                @Html.NavLink("Assets", nameof(IAssetController.GetAssets), nameof(AssetController))
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.NavLink("Feed", nameof(IUserController.GetUserFeed), nameof(UserController))
+                    @Html.NavLink("My Assets", nameof(IAssetController.GetAssets), nameof(AssetController), new { User = User.Identity.Name })
+
+                    if (User.IsInRole("Moderator"))
+                    {
+                        @Html.NavLink("Moderate", nameof(IAssetEditController.GetAssetEdits), nameof(AssetEditController))
+
+                    }
+                    <li class="seperator"></li>
+
+                    @Html.NavLink("Submit Asset", nameof(IAssetController.SubmitAssetForm), nameof(AssetController))
+                    @Html.NavLink($"Logout ({User.Identity.Name})", nameof(IAuthController.Logout), nameof(AuthController))
+                }
+                else
+                {
+                    @Html.NavLink("Login/Register", nameof(IAuthController.Login), nameof(AuthController))
+                }
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
