@@ -13,6 +13,11 @@ namespace GodotAssetLibrary.DataLayer.Services
             _context = context;
         }
 
+        public async Task<IEnumerable<Category>> GetCategoriesAsync(CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(_context.Categories);
+        }
+
         public async Task<IEnumerable<Category>> ListCategoriesByType(CategoryTypes categoryType, CancellationToken cancellationToken = default)
         {
             return await _context.Categories

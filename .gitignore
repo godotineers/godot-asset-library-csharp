@@ -4,3 +4,6 @@ src/settings-local.php
 bin/
 obj/
 .vs/
+*.dbmdl
+*.jfm
+*.refactorlog

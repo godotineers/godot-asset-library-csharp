@@ -1,7 +1,11 @@
+using FluentValidation;
+using FluentValidation.Results;
 using GodotAssetLibrary.Application.Results.Auth;
 using GodotAssetLibrary.Contracts;
 using GodotAssetLibrary.DataLayer.Services;
 using MediatR;
+using Microsoft.Win32;
+using System;
 
 namespace GodotAssetLibrary.Application.Commands.Auth
 {
@@ -47,6 +51,16 @@ namespace GodotAssetLibrary.Application.Commands.Auth
                     Registered = true,
                     Url = "login",
                 };
+            }
+        }
+
+        public class Validator : AbstractValidator<Register>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Username).NotNull().NotEmpty();
+                RuleFor(x => x.Password).NotNull().NotEmpty();
+                RuleFor(x => x.Email).NotNull().NotEmpty();
             }
         }
     }

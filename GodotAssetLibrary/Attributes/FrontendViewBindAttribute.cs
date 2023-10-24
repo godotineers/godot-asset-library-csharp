@@ -11,14 +11,12 @@ namespace GodotAssetLibrary.Attributes
     {
         public string ViewName { get; set; }
 
-        public Type Model { get; set; }
-
         public bool IsReusable => false;
 
 
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
-            return ActivatorUtilities.CreateInstance<Filter>(serviceProvider, new object[] { ViewName, Model });
+            return ActivatorUtilities.CreateInstance<Filter>(serviceProvider, new object[] { ViewName });
         }
 
         private class Filter : IActionFilter
@@ -26,19 +24,16 @@ namespace GodotAssetLibrary.Attributes
             public Filter(
                     IRequestLifetime requestLifetime,
                     IMediator mediator,
-                    string viewName,
-                    Type modelType)
+                    string viewName)
             {
                 RequestLifetime = requestLifetime;
                 Mediator = mediator;
                 ViewName = viewName;
-                ModelType = modelType;
             }
 
             public IRequestLifetime RequestLifetime { get; }
             public IMediator Mediator { get; }
             public string ViewName { get; }
-            public Type ModelType { get; }
 
             public void OnActionExecuting(ActionExecutingContext context)
             {

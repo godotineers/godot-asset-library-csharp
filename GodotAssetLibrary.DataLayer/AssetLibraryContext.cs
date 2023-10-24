@@ -1,3 +1,4 @@
+using GodotAssetLibrary.Common.Domain;
 using GodotAssetLibrary.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,10 @@ namespace GodotAssetLibrary.DataLayer
         public DbSet<AssetPreview> AssetPreviews { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<SoftwareLicense> Licenses { get; set; }
+
+        public DbSet<GodotVersion> Versions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

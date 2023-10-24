@@ -8,15 +8,15 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="MediatR" Version="12.1.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\GodotAssetLibrary.Contracts\GodotAssetLibrary.Contracts.csproj" />
-		<ProjectReference Include="..\GodotAssetLibrary.DataLayer\GodotAssetLibrary.DataLayer.csproj" />
-		<ProjectReference Include="..\GodotAssetLibrary.Domain\GodotAssetLibrary.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

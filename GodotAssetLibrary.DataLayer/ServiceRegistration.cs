@@ -1,3 +1,5 @@
+using GodotAssetLibrary.Contracts.Repositories;
+using GodotAssetLibrary.DataLayer.Repositories;
 using GodotAssetLibrary.DataLayer.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,8 @@ namespace GodotAssetLibrary.DataLayer
             services.AddScoped<IAssetService, AssetService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVersionRepository, VersionRepository>();
+            services.AddScoped<ILicenseRepository, LicenseRepository>();
 
             return services;
         }

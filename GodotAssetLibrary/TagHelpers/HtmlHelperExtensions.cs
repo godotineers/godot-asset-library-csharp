@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GodotAssetLibrary.TagHelpers
@@ -12,6 +13,12 @@ namespace GodotAssetLibrary.TagHelpers
             if (controllerName.EndsWith("Controller"))
             {
                 controllerName = controllerName[..^10];
+            }
+
+            var actionDescriptor = htmlHelper.ViewContext.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor != null && string.Equals(controllerName, actionDescriptor.ControllerName) && string.Equals(actionName, actionDescriptor.ActionName))
+            {
+                itemBuilder.AddCssClass("active");
             }
 
             itemBuilder.InnerHtml.AppendHtml(htmlHelper.ActionLink(linkText, actionName, controllerName, valueObject));
