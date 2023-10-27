@@ -1,14 +1,11 @@
 
+@await Html.PartialAsync("../Partials/_UserLoggedIn.cshtml")
 
-<?php if(isset($user)): ?>
-<div class="alert alert-info" role="alert">Your are already logged in as <?php echo esc($user['username']) ?></div>
-<?php endif ?>
+@await Html.PartialAsync("../Partials/_ErrorFragment.cshtml")
 
-<?php if(isset($data['error'])): ?>
-<div class="alert alert-danger" role="alert"><b>Error: </b> <?php echo esc($data['error']) ?></div>
-<?php endif ?>
 
-<form action="<?php echo raw($basepath) ?>/register" method="post">
+@using (Html.BeginForm("Register", "Auth", HttpMethod.Post))
+{
     @Html.AntiForgeryToken()
     <div class="form-group">
         <label for="login-form-username">Username</label>
@@ -26,5 +23,4 @@
         <a href="<?php echo raw($basepath) ?>/login" class="btn btn-default">Login</a>
         <button type="submit" class="btn btn-primary">Register</button>
     </div>
-</form>
-
+}

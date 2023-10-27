@@ -1,8 +1,5 @@
 
-
-<?php if(isset($user)): ?>
-<div class="alert alert-info" role="alert">You are already logged in as <?php echo esc($user['username']) ?></div>
-<?php endif ?>
+@await Html.PartialAsync("../Partials/_UserLoggedIn.cshtml")
 
 <?php if(isset($reset_user)): ?>
 <div class="alert alert-info" role="alert">
@@ -11,11 +8,10 @@
 </div>
 <?php endif ?>
 
-<?php if(isset($data['error'])): ?>
-<div class="alert alert-danger" role="alert"><b>Error: </b> <?php echo esc($data['error']) ?></div>
-<?php endif ?>
+@await Html.PartialAsync("../Partials/_ErrorFragment.cshtml")
 
-<form action="<?php echo raw($basepath) ?>/login" method="post">
+@using (Html.BeginForm("Login", "Auth", HttpMethod.Post))
+{
     @Html.AntiForgeryToken()
     <div class="form-group">
         <label for="login-form-username">Username</label>
@@ -27,8 +23,7 @@
     </div>
     <div class="btn-group">
         <button type="submit" class="btn btn-primary">Login</button>
-        <a href="<?php echo raw($basepath) ?>/register" class="btn btn-default">Register</a>
-        <a href="<?php echo raw($basepath) ?>/forgot_password" class="btn btn-link">Forgot password</a>
+        @Html.ActionLink("Register", "Register", "Auth", new { @class = "btn btn-default" })
+        @Html.ActionLink("Forgot password", "ForgotPassword", "Auth", new { @class = "btn btn-link" })
     </div>
-</form>
-
+}

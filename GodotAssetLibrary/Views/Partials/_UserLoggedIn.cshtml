@@ -1,0 +1,4 @@
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="alert alert-info" role="alert">You are already logged in as @User.Identity.Name</div>
+}
