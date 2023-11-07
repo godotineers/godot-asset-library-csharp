@@ -1,4 +1,3 @@
-
 @await Html.PartialAsync("../Partials/_UserLoggedIn.cshtml")
 
 @await Html.PartialAsync("../Partials/_ErrorFragment.cshtml")
@@ -20,7 +19,7 @@
         <input type="password" name="password" class="form-control" id="login-form-password" placeholder="Password">
     </div>
     <div class="btn-group">
-        <a href="<?php echo raw($basepath) ?>/login" class="btn btn-default">Login</a>
+        @Html.ActionLink("Login", "Login", "Auth", new { @class = "btn btn-default" })
         <button type="submit" class="btn btn-primary">Register</button>
     </div>
 }

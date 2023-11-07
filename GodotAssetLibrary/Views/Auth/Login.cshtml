@@ -1,12 +1,13 @@
 
 @await Html.PartialAsync("../Partials/_UserLoggedIn.cshtml")
 
-<?php if(isset($reset_user)): ?>
+@*TODO- add the reset link here.
+    <?php if(isset($reset_user)): ?>
 <div class="alert alert-info" role="alert">
     You are currently resetting the password for <?php echo esc($reset_user['username']) ?>.
     <a href="<?php echo raw($basepath) ?>/reset_password">Continue</a>
 </div>
-<?php endif ?>
+<?php endif ?> *@
 
 @await Html.PartialAsync("../Partials/_ErrorFragment.cshtml")
 
